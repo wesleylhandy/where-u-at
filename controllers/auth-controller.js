@@ -19,14 +19,20 @@ module.exports = function(app) {
         } else res.json({ user: req.session.username, isAuth: false })
     });
 
-    router.get('/auth/twitter', passportTwitter.authenticate('twitter'));
+    router.get('/twitter', passportTwitter.authenticate('twitter'));
 
-    router.get('/auth/twitter/callback',
-        passportTwitter.authenticate('twitter', { failureRedirect: '/' }),
-        function(req, res) {
-            // Successful authentication
-            res.json(req.user);
-        });
+    router.get('/twitter/callback',
+        passportTwitter.authenticate('twitter', { failureRedirect: '/' },
+            function(req, res) {
+                // Successful authentication
+                res.json({ user: req.user, isAuth: true });
+            })
+    );
 
-    app.use('/api', router);
+    router.post('/logout', function(req, res) {
+        req.logout();
+        res.send({ message: 'Logged Out' });
+    });
+
+    app.use('/auth', router);
 }
