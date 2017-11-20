@@ -40,7 +40,7 @@ app.use(bodyParser.json({ type: "application/vnd.api+json" }));
 app.set('port', port);
 
 // MongoDB
-var uri = 'mongodb://' + process.env.MLAB_USER + ':' + process.env.MLAB_PASS + '@ds135983.mlab.com:35983/devserver';
+var uri = process.env.MLAB_URI;
 
 //connect to mongodb//set controllers and sockets here to have access to DB
 mongoose.connect(uri, { useMongoClient: true })
@@ -90,8 +90,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 //SERVER SIDE RENDERING
-const universalLoader = require('./universal-compiled.js');
-app.use('/', universalLoader);
+//const universalLoader = require('./universal-compiled.js');
+//app.use('/', universalLoader);
 
 // Listen on port 3000 or assigned port
 const server = app.listen(app.get('port'), function() {
