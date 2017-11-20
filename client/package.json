@@ -1,0 +1,35 @@
+{
+  "name": "where-u-at-client",
+  "version": "0.1.0",
+  "private": true,
+  "author": "Wesley L. Handy",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.16.2",
+    "moment": "^2.18.1",
+    "node-sass-chokidar": "0.0.3",
+    "passport": "^0.4.0",
+    "prop-types": "^15.6.0",
+    "react": "^16.1.0",
+    "react-dom": "^16.1.0",
+    "react-router-dom": "^4.2.2",
+    "shortid": "^2.2.8",
+    "socket.io": "^2.0.4",
+    "yelp-fusion": "^1.0.4"
+  },
+  "devDependencies": {
+    "react-scripts": "1.0.17"
+  },
+  "scripts": {
+    "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/ --watch --recursive",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "optionalDependencies": {
+    "fsevents": "*"
+  },
+  "proxy": "http://localhost:3001/"
+}

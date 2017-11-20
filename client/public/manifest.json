@@ -1,0 +1,13 @@
+{
+    "short_name": "where-u-at",
+    "name": "Nightlife Social App",
+    "icons": [{
+        "src": "favicon.ico",
+        "sizes": "64x64 32x32 16x16",
+        "type": "image/x-icon"
+    }],
+    "start_url": "./index.html",
+    "display": "standalone",
+    "theme_color": "#BADA55",
+    "background_color": "#f1f1f1"
+}
