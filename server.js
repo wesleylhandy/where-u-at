@@ -47,6 +47,7 @@ mongoose.connect(uri, { useMongoClient: true })
 const db = mongoose.connection;
 mongoose.set('debug', true);
 db.on('error', console.error.bind(console, '# Mongo DB: connection error:'));
+
 //add session support
 app.set('trust proxy', 1) // trust first proxy
 const month = 1000 * 60 * 60 * 24 * 31;
