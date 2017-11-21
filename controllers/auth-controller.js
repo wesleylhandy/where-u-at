@@ -19,10 +19,10 @@ module.exports = function(app) {
         } else res.json({ user: req.session.username, isAuth: false })
     });
 
-    router.get('/twitter', passportTwitter.authenticate('twitter'));
+    router.get('/twitter', passport.authenticate('twitter'));
 
     router.get('/twitter/callback',
-        passportTwitter.authenticate('twitter', { failureRedirect: '/' },
+        passport.authenticate('twitter', { failureRedirect: '/' },
             function(req, res) {
                 // Successful authentication
                 res.json({ user: req.user, isAuth: true });

@@ -10,7 +10,7 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
-    friends: [{ type: ObjectId, ref: 'User' }],
+    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     favorites: [String]
 });
 
