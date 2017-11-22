@@ -3,8 +3,18 @@ import logo from './logo.svg';
 import './styles/index.css';
 
 import SearchBar from './Components/SearchBar.js';
+import EstablishmentList from './Components/EstablishmentList.js';
+import FriendsList from './Components/FriendsList.js';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      isAuth: false,
+      userId: '',
+      places:[]
+    }
+  }
   render() {
     return (
       <div className="App">
@@ -18,7 +28,14 @@ class App extends Component {
         </p>
         <main>
           <SearchBar />
+
         </main>
+        <section>
+          <EstablishmentList />
+        </section>
+        <aside className={this.state.isAuth ? '' : 'hidden'}>
+          <FriendsList />
+        </aside>
       </div>
     );
   }
