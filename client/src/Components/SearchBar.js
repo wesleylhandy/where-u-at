@@ -64,21 +64,22 @@ export default class SearchBar extends Component {
 
     handleSubmit(e){
         e.preventDefault();
+        alert("Thanks for submitting");
     }
 
     render() {
         return (
             <div className='search-bar'>
-                <form>
+                <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="search"><img src={locationImg} alt="Label"/></label>
                         <input type="text" name="search" placeholder="Enter Your City" value={this.state.searchTerm} onChange={this.handleInput} onKeyDown={this.handleKeys}/>
+                        <button className="search-btn"><i className="fa fa-search" aria-hidden="true"></i>&nbsp;Search</button>
                         <div className="location" onTouchStart={this.showTooltip} onMouseEnter={this.showTooltip} onTouchEnd={this.hideTooltip} onMouseLeave={this.hideTooltip} onClick={this.getGeolocation}>
                             <i className={this.state.geoLocated ? "fa fa-bullseye" : "fa fa-circle-thin"} aria-hidden="true"></i>
                             <div className={this.state.showTooltip ? "tooltip" : "hidden"}>Use Your Current Location</div>
                         </div>
                     </div>
-                    <button className="search-btn"><i className="fa fa-search" aria-hidden="true"></i>&nbsp;Search</button>
                 </form>
             </div>
         )
