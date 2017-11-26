@@ -9,7 +9,7 @@ module.exports.connect = (uri) => {
     }).then(function(db) {
 
         require('./User');
-        require('./Poll');
+        require('./Token');
 
     }).catch(function(err) {
         if (err) console.error(`Mongoose connectgion error: ${err}`);

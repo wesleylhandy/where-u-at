@@ -76,7 +76,7 @@ export default class SearchBar extends Component {
                         <input type="text" name="search" placeholder="Enter Your City" value={this.state.searchTerm} onChange={this.handleInput} onKeyDown={this.handleKeys}/>
                         <button className="search-btn"><i className="fa fa-search" aria-hidden="true"></i>&nbsp;Search</button>
                         <div className="location" onTouchStart={this.showTooltip} onMouseEnter={this.showTooltip} onTouchEnd={this.hideTooltip} onMouseLeave={this.hideTooltip} onClick={this.getGeolocation}>
-                            <i className={this.state.geoLocated ? "fa fa-bullseye" : "fa fa-circle-thin"} aria-hidden="true"></i>
+                            <i className={this.state.geoLocated ? "fa fa-bullseye" : "fa fa-compass"} aria-hidden="true"></i>
                             <div className={this.state.showTooltip ? "tooltip" : "hidden"}>Use Your Current Location</div>
                         </div>
                     </div>

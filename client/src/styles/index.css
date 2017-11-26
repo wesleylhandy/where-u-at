@@ -2,6 +2,9 @@
     display: none;
 }
 
+body {
+    background: #e6e7e8;
+}
 .App {
     text-align: center;
 }
@@ -13,10 +16,11 @@
 }
 
 .App-header {
-    background-color: #BADA55;
+    background-color: #e2396a;
     height: auto;
     padding: 20px;
-    color: #333;
+    color: #e6e7e8;
+    border-bottom: 3px solid #db1d46;
 }
 
 .App-title {
@@ -34,6 +38,16 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+main {
+    padding: 30px 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 980px;
+    margin: 0 auto;
 }
 
 /*
@@ -56,6 +70,7 @@
 }
 
 .form-group label {
+    margin: 0 5px;
     width: 50px;
 }
 
@@ -67,12 +82,14 @@
 .form-group input {
     flex: 1 1 0;
     padding: 0 10px;
+    border: 1px solid #e2396a;
+    outline: 1px solid #db1d46;
 }
 
 .form-group .location {
     position: absolute;
     top: 50%;
-    right: 105px;
+    right: 110px;
     transform: translateY(-50%);
     display: flex;
     flex-direction: row-reverse;
@@ -82,13 +99,19 @@
     font-size: 12px;
 }
 
+.form-group .location i {
+    font-size: 16px;
+    color: #db1d46;
+}
+
 .form-group .location div {
     margin-right: 3px;
 }
 
 .form-group .search-btn {
     width: 100px;
-    background: maroon;
-    color: orange;
-    border: 1px solid orange;
+    background: #e2396a;
+    color: #e6e7e8;
+    border: 1px solid #e6e7e8;
+    outline: 1px solid #db1d46;
 }
