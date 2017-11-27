@@ -22,7 +22,9 @@ export default class SearchBar extends Component {
     }
 
     showTooltip() {
-        this.setState({showTooltip: true});
+        if(!this.state.geoLocated) {
+            this.setState({showTooltip: true});
+        }
     }
 
     getGeolocation() {

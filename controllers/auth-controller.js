@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
+const yelp = require('yelp-fusion');
 const middleware = require('./../config/middleware');
 const User = require('../models/User');
 const Token = require('../models/Token');
@@ -21,31 +22,45 @@ module.exports = function(app) {
     });
 
     router.get('/getYelpToken', function(req, res) {
-        Token.findOne().exec(function(err, doc) {
-            if(err || !(doc && doc.hasOwnProperty('access_token'))) {
-                res.json({access_token: ''})
-            } else {
-                res.json({access_token: doc.access_token})
-            }
+        Token.findOne().then(function(token) {
+            res.json({ access_token: token.access_token })
+        }).catch(function(err) {
+            console.error(err);
+            res.json({
+                access_token: ''
+            })
         });
     });
 
-    router.post('/saveYelpToken', function(req, res){
+    router.get('/newYelpToken', function(req, res) {
 
-        var token = new Token({
-            access_token: req.body.access_token, 
-            token_type: req.body.token_type, 
-            expires_in: req.body.expires_in
-        });
+        yelp.accessToken(process.env.YELP_CLIENT_ID, process.env.YELP_CLIENT_SECRET)
+            .then(function(response) {
+                console.log({ response: response.jsonBody })
+                    //store the token in DB
+                var tokenData = {
+                    token_type: response.jsonBody.token_type,
+                    access_token: response.jsonBody.access_token,
+                    expires_in: response.jsonBody.expires_in
+                }
 
-        token.save(function(err, data) {
-            if(err) {
+                var token = new Token(tokenData);
+
+                token.save(function(err, data) {
+                    if (err) {
+                        console.log({ location: 'token.save.err', err: err.message })
+                        res.statusCode = 503;
+                        res.json({ err: err.message });
+                    } else {
+                        console.log({ location: 'token.save.data', data: data })
+                        res.json(data);
+                    }
+                })
+            }).catch(function(err) {
+                console.log({ location: 'yelp.accessToken.catch', err: err });
                 res.statusCode = 503;
-                res.json(err);
-            } else {
-                res.json(data);
-            }
-        })
+                res.json({ err: err.message });
+            })
 
     })
 

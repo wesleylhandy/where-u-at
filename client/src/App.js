@@ -22,7 +22,6 @@ class App extends Component {
 
   componentDidMount() {
     getYelpToken().then(response=>{
-      console.log({response});
       this.setState({access_token: response.access_token});
     }).catch(err=>alert(err))
   }
