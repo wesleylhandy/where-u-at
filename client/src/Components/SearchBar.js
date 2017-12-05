@@ -40,7 +40,7 @@ export default class SearchBar extends Component {
             }
 
             getLocation()
-            .then(location => this.setState({ geoLocated: true, searchTerm: `${location.coords.latitude}, ${location.coords.longitude}` }))
+            .then(location => this.setState({ geoLocated: true, searchTerm: `${location.coords.latitude}, ${location.coords.longitude}`}))
             .catch(err=>{
                 if(err) {
                     alert(err);
@@ -52,7 +52,7 @@ export default class SearchBar extends Component {
     handleKeys(e) {
         if (e.key === "Enter") {
             e.preventDefault();
-            return this.handleSubmit(e.target.name);
+            return this.handleSubmit(e);
         }
         if (e.key !== " ") {
             this.setState({geoLocated: false});
@@ -66,7 +66,18 @@ export default class SearchBar extends Component {
 
     handleSubmit(e){
         e.preventDefault();
-        alert("Thanks for submitting");
+
+        const search = this.state.searchTerm.trim();
+
+        const geolocation = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/.test(search);
+
+        let latitude, longitude;
+        if(geolocation) {
+            latitude = search.split(',')[0].trim();
+            longitude = search.split(',')[1].trim();
+        }
+
+        this.props.getBusinesses(geolocation, geolocation ? {latitude, longitude} : search)
     }
 
     render() {

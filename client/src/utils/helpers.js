@@ -28,7 +28,7 @@ export function unAuthUser() {
         axios.post('/auth/logout').then(response => {
             resolve(response.data);
         }).catch(err => {
-            reject(err);
+            reject({ title: 'Error', message: err.message });
         });
     });
 }
@@ -39,7 +39,7 @@ export function getYelpToken() {
         //get new yelp token
         axios.get('/auth/newYelpToken')
             .then(response => success(response.data))
-            .catch(err => failure(err))
+            .catch(err => failure({ title: 'Error', message: err.message }))
 
     }
 
@@ -54,11 +54,26 @@ export function getYelpToken() {
             }
 
         }).catch(err => {
-            console.error(err);
+            console.error({ helperError: err, location: 'getYelpToken' });
             //DB error, so we need a new token
             getNewToken(resolve, reject)
         });
 
 
     })
+}
+
+export function getYelpResults(geolocated, location, access_token) {
+    return new Promise((resolve, reject) => {
+        if (geolocated) {
+            location = JSON.stringify(location);
+        }
+        axios.get(`/search/locations/${encodeURIComponent(location)}/${access_token}?geolocated=${geolocated}`).then(response => {
+            resolve(response.data)
+        }).catch(err => {
+            console.error({ helperError: err, location: 'getYelpResults' });
+            reject({ title: 'Error', message: err.message });
+        })
+
+    });
 }

@@ -82,6 +82,7 @@ if (process.env.NODE_ENV !== 'production') {
 const passportConfig = require('./config/passport');
 
 require("./controllers/auth-controller.js")(app);
+require("./controllers/search-controller.js")(app);
 require("./controllers/checkin-controller.js")(app);
 
 

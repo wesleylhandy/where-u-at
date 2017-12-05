@@ -6,7 +6,7 @@ import SearchBar from './Components/SearchBar.js';
 import EstablishmentList from './Components/EstablishmentList.js';
 import FriendsList from './Components/FriendsList.js';
 
-import {getYelpToken} from './utils/helpers.js';
+import {getYelpToken, getYelpResults} from './utils/helpers.js';
 
 class App extends Component {
   constructor(props){
@@ -26,13 +26,17 @@ class App extends Component {
     }).catch(err=>alert(err))
   }
 
-  getBusinesses(location){
-    // axios.get('https://api.yelp.com/v3/businesses/search', 
-    //   {params: 
-    //     {
+  // componentDidUpdate() {
+  //   console.log({updatedPlaces: this.state.places});
+  // }
 
-    //   }
-    // })
+  getBusinesses(geolocated, location){
+    var access_token = this.state.access_token || '';
+    if(access_token) {
+      getYelpResults(geolocated, location, access_token).then(response=>{
+        this.setState({places: response.places});
+      }).catch(err=>alert(err));
+    } 
   }
 
   render() {
@@ -46,12 +50,12 @@ class App extends Component {
        
         <main>
           <div className='container'>
-            <SearchBar getBusinesses={this.getBusinesses}/>
+            <SearchBar getBusinesses={this.getBusinesses} />
           </div>
         </main>
         <section>
           <div className='container'>
-            <EstablishmentList />
+            <EstablishmentList establishments={this.state.places}/>
           </div>
         </section>
         <aside className={this.state.isAuth ? '' : 'hidden'}>

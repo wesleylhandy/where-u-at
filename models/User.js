@@ -11,7 +11,7 @@ const UserSchema = new Schema({
         required: true
     },
     friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    favorites: [String]
+    favorites: [{ type: Schema.Types.ObjectId, ref: 'Place' }]
 });
 
 module.exports = mongoose.model('User', UserSchema);
