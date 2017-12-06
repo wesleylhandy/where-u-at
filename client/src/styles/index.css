@@ -119,3 +119,24 @@ main {
     outline: 1px solid #db1d46;
     margin-left: 7.5px;
 }
+
+ul {
+    list-style-type: none;
+}
+
+.establishment-card {
+    width: 100%;
+    height: auto;
+    padding: 30px 10px;
+    background: white;
+    margin-top: 20px;
+    border: 2px solid indigo;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.establishment-card img {
+    height: 75px;
+}

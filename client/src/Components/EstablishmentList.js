@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-// import Establishment from "./Establishment.js";
+import Establishment from "./Establishment.js";
 
 export default class EstablishmentList extends Component {
   constructor(props){
@@ -24,8 +24,7 @@ export default class EstablishmentList extends Component {
   }
 
   renderEstablishments(establishments){
-    console.log({establishments: establishments});
-    return establishments.map((est, ind)=> <li key={ind}>{JSON.stringify(est, null, 2)}</li>);
+    return establishments.map((est, ind)=> <li key={ind}><Establishment establishment={est}/></li>);
   }
   render(){
     return (
