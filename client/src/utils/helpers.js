@@ -11,13 +11,18 @@ export function getSession() {
     });
 }
 
-
-export function authUser(username, password) {
+export function authUser() {
     return new Promise((resolve, reject) => {
-        axios.post('/auth/twitter', { username, password }).then(response => {
+        axios.get('/auth/twitter', {
+            proxy: {
+                host: '127.0.0.1',
+                port: 3001
+            }
+        }).then(response => {
             resolve(response.data);
         }).catch(err => {
-            if (err) reject(err.response.data);
+            console.error({ twitterAuthErr: err })
+            if (err) reject(err);
             else reject({ title: 'Error', message: 'Service Unavailable - Please try again later.' });
         });
     });

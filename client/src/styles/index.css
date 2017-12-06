@@ -111,13 +111,15 @@ main {
     margin-top: 2px;
 }
 
-.form-group .search-btn {
+.form-group .search-btn,
+.btn-group .going-btn {
     width: 100px;
     background: #e2396a;
     color: #e6e7e8;
     border: 1px solid #e6e7e8;
     outline: 1px solid #db1d46;
     margin-left: 7.5px;
+    height: 50px;
 }
 
 ul {
@@ -130,13 +132,72 @@ ul {
     padding: 30px 10px;
     background: white;
     margin-top: 20px;
-    border: 2px solid indigo;
+    border: 2px solid #db1d46;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
-.establishment-card img {
+.establishment-card>a>img {
     height: 75px;
+}
+
+.establishment-card__info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: left;
+    padding-left: 20px;
+}
+
+.establishment-card__info>div:first-child a {
+    margin-left: 2px;
+}
+
+.establishment-card__info--address-block {
+    text-align: left;
+    margin-left: 6px;
+}
+
+.establishment-card__info--address-block a {
+    text-decoration: none;
+    color: #202020;
+}
+
+.establishment-card__info--address-block a:hover {
+    text-decoration: underline;
+}
+
+.establishment-card__info--address-block>a>span {
+    margin-left: 8px;
+}
+
+.establishment-card__info--address-block>a>div {
+    margin-left: 20px;
+}
+
+.nophoto {
+    width: 75px;
+    height: 75px;
+    font-size: 25px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #202020;
+    background: #cecece;
+    color: #202020;
+    text-decoration: none;
+}
+
+.yelp-burst {
+    width: 25px;
+    height: 25px;
+}
+
+.yelp-rating {
+    margin-left: 10px;
+    height: 15px;
 }

@@ -67,12 +67,22 @@ module.exports = function(app) {
     router.get('/twitter', passport.authenticate('twitter'));
 
     router.get('/twitter/callback',
-        passport.authenticate('twitter', { failureRedirect: '/' },
-            function(req, res) {
-                // Successful authentication
-                res.json({ user: req.user, isAuth: true });
-            })
+        passport.authenticate('twitter', {
+            successRedirect: '/auth/twittersuccess',
+            failureRedirect: '/auth/twitterfail'
+        })
     );
+
+    router.get('/twittersuccess', function(req, res) {
+        // Successful authentication
+        res.json({ user: req.user, isAuth: true });
+    })
+
+
+    router.get('/twitterfail', function(req, res) {
+        res.statusCode(503);
+        res.json({ err: 'Unable to Validate User Credentials' })
+    })
 
     router.post('/logout', function(req, res) {
         req.logout();

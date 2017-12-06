@@ -1,6 +1,7 @@
 // Dependencies
 const compression = require('compression');
 const express = require("express");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
 const path = require('path');
@@ -65,6 +66,7 @@ app.use(passport.session());
 
 //middleware to display session data in console - remove for production
 if (process.env.NODE_ENV !== 'production') {
+    //log SESSION
     app.use(function(req, res, next) {
         console.log('');
         console.log('*************SESSION MIDDLEWARE***************');
@@ -75,7 +77,9 @@ if (process.env.NODE_ENV !== 'production') {
         console.log('**********************************************');
         console.log('');
         next();
-    })
+    });
+    //enable CORS
+    app.use(cors());
 }
 
 //set up passport for user authentication
@@ -85,10 +89,11 @@ require("./controllers/auth-controller.js")(app);
 require("./controllers/search-controller.js")(app);
 require("./controllers/checkin-controller.js")(app);
 
-
 // Make public a static dir
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
+} else {
+    app.use(express.static('client/public'));
 }
 
 //SERVER SIDE RENDERING
