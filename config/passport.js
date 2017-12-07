@@ -19,7 +19,7 @@ passport.use(new TwitterStrategy({
         consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
         callbackURL: process.env.NODE_ENV === 'production' ? process.env.TWITTER_CALLBACK_URL : 'http://127.0.0.1:3001/auth/twitter/callback'
     },
-    function(accessToken, refreshToken, profile, done) {
+    function(token, tokenSecret, profile, done) {
         var searchQuery = {
             name: profile.displayName
         };
@@ -30,10 +30,11 @@ passport.use(new TwitterStrategy({
         var options = {
             upsert: true
         };
+        console.log(JSON.stringify(profile, null, 5));
         // update the user if s/he exists or add a new user
         User.findOneAndUpdate(searchQuery, updates, options, function(err, user) {
             if (err) {
-                return done(err);
+                return done(err, null);
             } else {
                 return done(null, user);
             }

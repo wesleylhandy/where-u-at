@@ -92,20 +92,21 @@ require("./controllers/checkin-controller.js")(app);
 // Make public a static dir
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
-} else {
-    app.use(express.static('client/public'));
 }
 
+// else {
+//     const proxy = require('express-http-proxy')
+//     app.use('/*', proxy('http://127.0.0.1:3000/'))
+// }
+
 //SERVER SIDE RENDERING
-//const universalLoader = require('./universal-compiled.js');
-//app.use('/', universalLoader);
+// const universalLoader = require('./universal-compiled.js');
+// app.use('/', universalLoader);
 
 // Listen on port 3000 or assigned port
 const server = app.listen(app.get('port'), function() {
     console.log(`App running on ${app.get('port')}`);
 });
-
-
 
 // socket.io server for websockets
 //for future development

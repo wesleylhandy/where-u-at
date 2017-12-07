@@ -80,7 +80,7 @@ module.exports = function(app) {
 
 
     router.get('/twitterfail', function(req, res) {
-        res.statusCode(503);
+        res.statusCode = 503;
         res.json({ err: 'Unable to Validate User Credentials' })
     })
 
