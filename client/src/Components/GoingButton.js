@@ -20,16 +20,17 @@ export default class GoingButton extends Component {
     this.setState({isAuth: nextProps.isAuth, userId: nextProps.userId });
   }
   handleClick(){
-    if(this.state.going){
       this.props.logout();
-    } else {
-      this.props.login();
-    }
+  }
+
+  renderButton(isAuth) {
+    if (isAuth) return <button className="going-btn checked" onClick={this.handleClick}>Going</button>
+    else return <a className="going-btn" href="http://127.0.0.1:3001/auth/twitter">Select</a>
   }
   render(){
     return (
       <div className="btn-group">
-        <button className="going-btn" onClick={this.handleClick}>Going</button>
+        {this.renderButton(this.state.isAuth)}
         <div className="counter">{this.state.numGoing}</div>
       </div>
     )

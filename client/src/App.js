@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import {Route} from 'react-router-dom';
 import logo from './images/logo.svg';
 import './styles/index.css';
 
 import SearchBar from './Components/SearchBar.js';
 import EstablishmentList from './Components/EstablishmentList.js';
 import FriendsList from './Components/FriendsList.js';
+import Auth from './Components/Auth.js';
 
 import {getYelpToken, getYelpResults, authUser, unAuthUser, getSession} from './utils/helpers.js';
 
@@ -23,7 +25,7 @@ class App extends Component {
     this.getBusinesses=this.getBusinesses.bind(this);
     this.login=this.login.bind(this);
     this.logout=this.logout.bind(this);
-
+    this.updateAuth=this.updateAuth.bind(this);
   }
 
   componentDidMount() {
@@ -51,6 +53,10 @@ class App extends Component {
         console.log({searchTotal: response.totalPlaces});
       }).catch(err=>alert(err));
     } 
+  }
+
+  updateAuth(bool, userId) {
+    this.setState({ isAuth: bool, userId: userId });
   }
 
   login() {
@@ -83,6 +89,7 @@ class App extends Component {
             <EstablishmentList establishments={this.state.places} isAuth={this.state.isAuth} userId={this.state.userId} login={this.login} logout={this.logout}/>
           </div>
         </section>
+        <Route path="/callback" render={props => <Auth updateAuth={this.updateAuth} {...props} />}></Route>
         <aside className={this.state.isAuth ? '' : 'hidden'}>
           <FriendsList isAuth={this.state.isAuth} userId={this.state.userId}/>
         </aside>
