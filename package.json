@@ -45,7 +45,8 @@
         "start": "concurrently \"NODE_ENV=production npm run server\" \"NODE_ENV=production npm run client\"",
         "server": "node server.js",
         "client:dev": "NODE_ENV=development babel-node start-client.js",
-        "client": "node start-client.js"
+        "client": "node start-client.js",
+        "test": "node test-client.js"
     },
     "optionalDependencies": {
         "fsevents": "*"

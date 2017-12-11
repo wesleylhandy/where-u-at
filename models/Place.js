@@ -5,7 +5,7 @@ const PlaceSchema = new Schema({
     data: Schema.Types.Mixed,
     going: [{
         searchDate: Date,
-        peeps: { type: Schema.Types.ObjectId, ref: 'User' }
+        peep: { type: Schema.Types.ObjectId, ref: 'User' }
     }]
 });
 
