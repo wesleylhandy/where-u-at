@@ -1,4 +1,4 @@
-const search = (state = {}, action) => {
+export const search = (state = {}, action) => {
     switch (action.type) {
         case 'ADD_SEARCH':
             return {
@@ -22,7 +22,7 @@ const search = (state = {}, action) => {
     }
 }
 
-const establishment = (state = [], action) => {
+export const establishment = (state = [], action) => {
     switch (action.type) {
         case 'ADD_ESTABLISHMENT':
             return {
@@ -31,6 +31,7 @@ const establishment = (state = [], action) => {
                 going: []
             }
         case 'ADD_GOING':
+
             return {
                 ...state,
                 going: [...state.going, going(undefined, action)]
@@ -45,11 +46,12 @@ const establishment = (state = [], action) => {
     }
 }
 
-const going = (state = [], action) => {
+export const going = (state = [], action) => {
     switch (action.type) {
         case 'ADD_GOING':
+
             return {
-                ...state,
+                id: action.id,
                 searchDate: action.searchDate,
                 peep: action.peep
             }

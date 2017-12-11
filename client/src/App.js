@@ -7,7 +7,7 @@ import SearchBar from './Components/SearchBar.js';
 import EstablishmentList from './Components/EstablishmentList.js';
 import FriendsList from './Components/FriendsList.js';
 import Auth from './Components/Auth.js';
-import Logo from './Components/Logo.js';
+// import Logo from './Components/Logo.js';
 
 import {getYelpToken, getYelpResults, authUser, unAuthUser, getSession} from './utils/helpers.js';
 
@@ -75,7 +75,7 @@ class App extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <Logo className="App-logo" alt="logo" />
+          {/*<Logo className="App-logo" alt="logo" /> */}
           <h1 className="App-title">Where U @ ?</h1>
           <h4 className='App-subtitle'>An App for Connecting With Groups of Friends in Public</h4>
         </header>
