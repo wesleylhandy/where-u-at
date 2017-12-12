@@ -1,14 +1,12 @@
 import deepFreeze from 'deep-freeze';
-
+import { addUser, removeUser, addEstablishment, addSearch, addGoing, removeGoing } from './actions';
 import { search } from './reducers.js';
 
 const testAddUser = () => {
     const stateBefore = {};
-    const action = {
-        type: 'ADD_USER',
-        isAuth: true,
-        userId: 'wesleylhandy'
-    }
+
+    const action = addUser('wesleylhandy', true);
+
     const stateAfter = {
         isAuth: true,
         userId: 'wesleylhandy'
@@ -23,12 +21,9 @@ const testAddUser = () => {
 
 const testAddSearch = () => {
     const stateBefore = {};
-    const action = {
-        type: 'ADD_SEARCH',
-        current_search: 'Virginia Beach, VA',
-        places: [],
-        geolocated: false
-    }
+
+    const action = addSearch('Virginia Beach, VA', false);
+
     const stateAfter = {
         isAuth: false,
         userId: '',
@@ -50,18 +45,9 @@ const testAddEstablishment = () => {
         places: [],
         geolocated: false
     }
-    const action = {
-        type: 'ADD_ESTABLISHMENT',
-        id: 1,
-        data: {
-            name: 'Starbucks',
-            imageUrl: 'http://lorempixel.com/business',
-            rating: 3.5,
-            display_address: ['233 Independence Blvd', 'Virginia Beach, VA'],
-            yelpId: 12345
-        },
-        going: []
-    }
+
+    const action = addEstablishment(1, { name: 'Starbucks', imageUrl: 'http://lorempixel.com/business', rating: 3.5, display_address: ['233 Independence Blvd', 'Virginia Beach, VA'], yelpId: '12345' })
+
     const stateAfter = {
         current_search: 'Virginia Beach, VA',
         places: [{
@@ -71,7 +57,7 @@ const testAddEstablishment = () => {
                 imageUrl: 'http://lorempixel.com/business',
                 rating: 3.5,
                 display_address: ['233 Independence Blvd', 'Virginia Beach, VA'],
-                yelpId: 12345
+                yelpId: '12345'
             },
             going: []
         }],
@@ -103,12 +89,8 @@ const testAddGoing = () => {
         }],
         geolocated: false
     }
-    const action = {
-        type: 'ADD_GOING',
-        id: 1,
-        peep: 'wesleylhandy',
-        searchDate: '12/11/17'
-    }
+    const action = addGoing(1, 'wesleylhandy', '12-11-17');
+
     const stateAfter = {
         isAuth: true,
         userId: 'wesleylhandy',
@@ -125,58 +107,8 @@ const testAddGoing = () => {
             going: [{
                 id: 1,
                 peep: 'wesleylhandy',
-                searchDate: '12/11/17'
+                searchDate: '12-11-17'
             }]
-        }],
-        geolocated: false
-    }
-    deepFreeze(stateBefore);
-    deepFreeze(action);
-
-    expect(
-        search(stateBefore, action)
-    ).toEqual(stateAfter);
-}
-
-
-const testAddGoingUnAuth = () => {
-    const stateBefore = {
-        isAuth: false,
-        userId: '',
-        current_search: 'Virginia Beach, VA',
-        places: [{
-            id: 1,
-            data: {
-                name: 'Starbucks',
-                imageUrl: 'http://lorempixel.com/business',
-                rating: 3.5,
-                display_address: ['233 Independence Blvd', 'Virginia Beach, VA'],
-                yelpId: 12345
-            },
-            going: []
-        }],
-        geolocated: false
-    }
-    const action = {
-        type: 'ADD_GOING',
-        id: 1,
-        peep: 'wesleylhandy',
-        searchDate: '12/11/17'
-    }
-    const stateAfter = {
-        isAuth: false,
-        userId: '',
-        current_search: 'Virginia Beach, VA',
-        places: [{
-            id: 1,
-            data: {
-                name: 'Starbucks',
-                imageUrl: 'http://lorempixel.com/business',
-                rating: 3.5,
-                display_address: ['233 Independence Blvd', 'Virginia Beach, VA'],
-                yelpId: 12345
-            },
-            going: []
         }],
         geolocated: false
     }
@@ -205,22 +137,19 @@ const testRemoveGoing = () => {
             going: [{
                     id: 1,
                     peep: 'wesleylhandy',
-                    searchDate: '12/11/17'
+                    searchDate: '12-11-17'
                 },
                 {
                     id: 2,
                     peep: 'someotherGuy',
-                    searchDate: '12/11/17'
+                    searchDate: '12-11-17'
                 }
             ]
         }],
         geolocated: false
     }
-    const action = {
-        type: 'REMOVE_GOING',
-        id: 1,
-        peep: 'wesleylhandy'
-    }
+    const action = removeGoing(1, 'wesleylhandy')
+
     const stateAfter = {
         isAuth: true,
         userId: 'wesleylhandy',
@@ -237,7 +166,7 @@ const testRemoveGoing = () => {
             going: [{
                 id: 2,
                 peep: 'someotherGuy',
-                searchDate: '12/11/17'
+                searchDate: '12-11-17'
             }]
         }],
         geolocated: false
@@ -267,20 +196,19 @@ const testRemoveUser = () => {
             going: [{
                     id: 1,
                     peep: 'wesleylhandy',
-                    searchDate: '12/11/17'
+                    searchDate: '12-11-17'
                 },
                 {
                     id: 2,
                     peep: 'someotherGuy',
-                    searchDate: '12/11/17'
+                    searchDate: '12-11-17'
                 }
             ]
         }],
         geolocated: false
     }
-    const action = {
-        type: 'REMOVE_USER'
-    }
+    const action = removeUser();
+
     const stateAfter = {
         isAuth: false,
         userId: '',
@@ -297,11 +225,11 @@ const testRemoveUser = () => {
             going: [{
                 id: 1,
                 peep: 'wesleylhandy',
-                searchDate: '12/11/17'
+                searchDate: '12-11-17'
             }, {
                 id: 2,
                 peep: 'someotherGuy',
-                searchDate: '12/11/17'
+                searchDate: '12-11-17'
             }]
         }],
         geolocated: false
@@ -314,100 +242,27 @@ const testRemoveUser = () => {
     ).toEqual(stateAfter);
 }
 
-const testRemoveGoingUnAuth = () => {
-    const stateBefore = {
-        isAuth: false,
-        userId: '',
-        current_search: 'Virginia Beach, VA',
-        places: [{
-            id: 1,
-            data: {
-                name: 'Starbucks',
-                imageUrl: 'http://lorempixel.com/business',
-                rating: 3.5,
-                display_address: ['233 Independence Blvd', 'Virginia Beach, VA'],
-                yelpId: 12345
-            },
-            going: [{
-                    id: 1,
-                    peep: 'wesleylhandy',
-                    searchDate: '12/11/17'
-                },
-                {
-                    id: 2,
-                    peep: 'someotherGuy',
-                    searchDate: '12/11/17'
-                }
-            ]
-        }],
-        geolocated: false
-    }
-    const action = {
-        type: 'REMOVE_GOING',
-        id: 1,
-        peep: ''
-    }
-    const stateAfter = {
-        isAuth: false,
-        userId: '',
-        current_search: 'Virginia Beach, VA',
-        places: [{
-            id: 1,
-            data: {
-                name: 'Starbucks',
-                imageUrl: 'http://lorempixel.com/business',
-                rating: 3.5,
-                display_address: ['233 Independence Blvd', 'Virginia Beach, VA'],
-                yelpId: 12345
-            },
-            going: [{
-                id: 1,
-                peep: 'wesleylhandy',
-                searchDate: '12/11/17'
-            }, {
-                id: 2,
-                peep: 'someotherGuy',
-                searchDate: '12/11/17'
-            }]
-        }],
-        geolocated: false
-    }
-    deepFreeze(stateBefore);
-    deepFreeze(action);
-
-    expect(
-        search(stateBefore, action)
-    ).toEqual(stateAfter);
-}
-
-describe('adds user', () => {
-    test('ADD_USER', testAddUser);
+describe('calls action to and successfully adds user', () => {
+    test('addUser()', testAddUser);
 });
 
-describe('removes user (after logout presumably)', () => {
-    test('REMOVE_USER', testRemoveUser);
+describe('calls action to and successfully removes user', () => {
+    test('removeUser()', testRemoveUser);
 });
 
-describe('adds search term', () => {
-    test('ADD_SEARCH', testAddSearch);
+describe('calls action to and successfully adds search term', () => {
+    test('addSearch()', testAddSearch);
 })
 
-describe('adds establishment', () => {
-    test('ADD_ESTABLISHMENT', testAddEstablishment);
+describe('calls action to and successfully adds establishment', () => {
+    test('addEstablishment()', testAddEstablishment);
 });
 
-describe('adds authenticated user to going list', () => {
-    test('ADD_GOING', testAddGoing);
+describe('calls action to and successfully adds authenticated user to going list', () => {
+    test('addGoing()', testAddGoing);
 });
 
-describe('does not add unauthorized user to going list', () => {
-    test('ADD_GOING', testAddGoingUnAuth);
-});
 
-describe('removes authenticated user from going list', () => {
-    test('REMOVE_GOING', testRemoveGoing);
+describe('calls action to and successfully removes authenticated user from going list', () => {
+    test('removeGoing()', testRemoveGoing);
 })
-
-describe('does not remove unauthorized user from going list', () => {
-    test('REMOVE_GOING', testRemoveGoingUnAuth);
-});

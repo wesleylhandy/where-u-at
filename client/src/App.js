@@ -15,6 +15,7 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state={
+      store: props.store,
       isAuth: false,
       userId: '',
       places:[],
@@ -30,7 +31,7 @@ class App extends Component {
   }
 
   componentDidMount() {
-    
+    this.setState({store: this.props.store});
     getYelpToken().then(response=>{
       this.setState({access_token: response.access_token});
     }).catch(err=>alert(err));
@@ -38,6 +39,11 @@ class App extends Component {
     getSession()
       .then(res => {
         this.setState({ userId: res.user, isAuth: res.isAuth })
+        this.state.store.dispatch({
+          type: "ADD_USER",
+          userId: res.user,
+          isAuth: res.isAuth
+        });
       })
       .catch(err => console.error(err));
   }
@@ -52,6 +58,11 @@ class App extends Component {
       getYelpResults(geolocated, location, access_token).then(response=>{
         this.setState({places: response.places, current_search: location, current_geolocated: geolocated, totalPlaces: parseInt(response.totalPlaces, 10)});
         console.log({searchTotal: response.totalPlaces});
+        response.places.forEach((place, index)=>this.state.store.dispatch({
+          type: 'ADD_ESTABLISHMENT',
+          id: index,
+          data: place
+        }))
       }).catch(err=>alert(err));
     } 
   }
@@ -63,6 +74,11 @@ class App extends Component {
   login() {
     authUser().then(response=>{
       this.setState({isAuth: true, userId: response.user});
+      this.state.store.dispatch({
+        type: "ADD_USER",
+        userId: response.user,
+        isAuth: response.isAuth
+      });
     }).catch(err => alert(err));
   }
   logout() {
