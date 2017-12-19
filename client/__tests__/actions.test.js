@@ -1,6 +1,6 @@
 import deepFreeze from 'deep-freeze';
-import { addUser, removeUser, addEstablishment, addSearch, addGoing, removeGoing } from './actions';
-import { search } from './reducers.js';
+import { addUser, removeUser, addEstablishment, addEstablishments, addSearch, addGoing, removeGoing } from '../src/actions/actions';
+import { search } from '../src/reducers/reducers';
 
 const testAddUser = () => {
     const stateBefore = {};
@@ -58,6 +58,66 @@ const testAddEstablishment = () => {
                 rating: 3.5,
                 display_address: ['233 Independence Blvd', 'Virginia Beach, VA'],
                 yelpId: '12345'
+            },
+            going: []
+        }],
+        geolocated: false
+    }
+    deepFreeze(stateBefore);
+    deepFreeze(action);
+
+    expect(
+        search(stateBefore, action)
+    ).toEqual(stateAfter);
+}
+
+const testAddEstablishments = () => {
+    const stateBefore = {
+        current_search: 'Virginia Beach, VA',
+        places: [],
+        geolocated: false
+    }
+
+    const action = addEstablishments([{
+        id: 'aadf1234',
+        data: {
+            name: 'Starbucks',
+            imageUrl: 'http://lorempixel.com/business',
+            rating: 3.5,
+            display_address: ['233 Independence Blvd', 'Virginia Beach, VA'],
+            yelpId: '12345'
+        }
+    }, {
+        id: 'abbc3456',
+        data: {
+            name: 'Dunkin Donuts',
+            imageUrl: 'http://lorempixel.com/business',
+            rating: 3,
+            display_address: ['122 Lynnhaven Pkwy', 'Virginia Beach, VA'],
+            yelpId: '23456'
+        }
+    }]);
+
+    const stateAfter = {
+        current_search: 'Virginia Beach, VA',
+        places: [{
+            id: 'aadf1234',
+            data: {
+                name: 'Starbucks',
+                imageUrl: 'http://lorempixel.com/business',
+                rating: 3.5,
+                display_address: ['233 Independence Blvd', 'Virginia Beach, VA'],
+                yelpId: '12345'
+            },
+            going: []
+        }, {
+            id: 'abbc3456',
+            data: {
+                name: 'Dunkin Donuts',
+                imageUrl: 'http://lorempixel.com/business',
+                rating: 3,
+                display_address: ['122 Lynnhaven Pkwy', 'Virginia Beach, VA'],
+                yelpId: '23456'
             },
             going: []
         }],
@@ -243,26 +303,29 @@ const testRemoveUser = () => {
 }
 
 describe('calls action to and successfully adds user', () => {
-    test('addUser()', testAddUser);
+    test('addUser() action', testAddUser);
 });
 
 describe('calls action to and successfully removes user', () => {
-    test('removeUser()', testRemoveUser);
+    test('removeUser() action', testRemoveUser);
 });
 
 describe('calls action to and successfully adds search term', () => {
-    test('addSearch()', testAddSearch);
+    test('addSearch() action', testAddSearch);
 })
 
 describe('calls action to and successfully adds establishment', () => {
-    test('addEstablishment()', testAddEstablishment);
+    test('addEstablishment() action', testAddEstablishment);
 });
+
+describe('calls action to and successfully adds an array of establishments', () => {
+    test('addEstablishments() action', testAddEstablishments);
+})
 
 describe('calls action to and successfully adds authenticated user to going list', () => {
-    test('addGoing()', testAddGoing);
+    test('addGoing() action', testAddGoing);
 });
 
-
 describe('calls action to and successfully removes authenticated user from going list', () => {
-    test('removeGoing()', testRemoveGoing);
+    test('removeGoing() action', testRemoveGoing);
 })

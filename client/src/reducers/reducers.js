@@ -9,6 +9,7 @@
  * @param {Boolean} [action.geolocated] - true if action.current_search is lat/long coords
  * @param {Number} [action.id]
  * @param {Object} [action.data] - business data returned from yelp
+ * @param {Object[]} [action.places] - list of businesses returned from yelp api
  * @param {String} [action.peep] - current user's id if adding onself to going list
  * @param {String} [action.searchDate] - current date in MM-DD-YYYY format
  * @returns {Object} - new state of application
@@ -39,6 +40,14 @@ export const search = (state = {}, action) => {
             return {
                 ...state,
                 places: [...state.places, establishment(undefined, action)]
+            }
+        case 'ADD_ESTABLISHMENTS':
+            return {
+                ...state,
+                places: action.places.map(place => {
+                    const secondaryAction = {...place, type: "ADD_ESTABLISHMENT" };
+                    return establishment(undefined, secondaryAction);
+                })
             }
         case 'ADD_GOING':
         case 'REMOVE_GOING':

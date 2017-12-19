@@ -56,6 +56,18 @@ export const addEstablishment = (id, place) => {
 }
 
 /**
+ * Returns an object to be dispatched to the redux store with an array of Establishments returned from Yelp API
+ * @param {Object[]} places - array of data returned from the yelp api
+ */
+
+export const addEstablishments = (places) => {
+    return {
+        type: 'ADD_ESTABLISHMENTS',
+        places
+    }
+}
+
+/**
  * Returns an object to be dispatched to the redux store for an authorized user to indicate they are going to a particular location
  * @param {Number} id - represents the index for this paricular user to be added to the array of users currently registered at this location
  * @param {String} userId - id of the current logged in user
