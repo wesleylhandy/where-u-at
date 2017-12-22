@@ -1,90 +1,47 @@
 import React, { Component } from 'react';
-import {Route} from 'react-router-dom';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actionCreators from './actions/actions';
+
 import 'raf/polyfill';
 import './styles/index.css';
 
 import SearchBar from './Components/SearchBar.js';
 import EstablishmentList from './Components/EstablishmentList.js';
 import FriendsList from './Components/FriendsList.js';
-import Auth from './Components/Auth.js';
-// import Logo from './Components/Logo.js';
 
-import {getYelpToken, getYelpResults, authUser, unAuthUser, getSession} from './utils/helpers.js';
+import {getYelpToken, getSession} from './utils/helpers.js';
 
 class App extends Component {
   constructor(props){
     super(props);
     this.state={
-      store: props.store,
-      isAuth: false,
-      userId: '',
-      places:[],
       access_token: '',
-      current_search: null,
-      current_geolocated: false,
-      totalPlaces: 0
+      totalPlaces: 0,
+      ...props
     }
-    this.getBusinesses=this.getBusinesses.bind(this);
-    this.login=this.login.bind(this);
-    this.logout=this.logout.bind(this);
-    this.updateAuth=this.updateAuth.bind(this);
+
   }
 
   componentDidMount() {
-    this.setState({store: this.props.store});
+    // console.log({InitialState: this.state});
+
     getYelpToken().then(response=>{
       this.setState({access_token: response.access_token});
     }).catch(err=>alert(err));
     
     getSession()
       .then(res => {
-        this.setState({ userId: res.user, isAuth: res.isAuth })
-        this.state.store.dispatch({
-          type: "ADD_USER",
-          userId: res.user,
-          isAuth: res.isAuth
-        });
+        this.props.addUser(res.user, res.isAuth === true ? true : false);
       })
       .catch(err => console.error(err));
+
+    console.log(window.location.search);
+
   }
 
-  // componentDidUpdate() {
-  //   console.log({updatedPlaces: this.state.places});
-  // }
-
-  getBusinesses(geolocated, location){
-    var access_token = this.state.access_token || '';
-    if(access_token) {
-      getYelpResults(geolocated, location, access_token).then(response=>{
-        this.setState({places: response.places, current_search: location, current_geolocated: geolocated, totalPlaces: parseInt(response.totalPlaces, 10)});
-        console.log({searchTotal: response.totalPlaces});
-        response.places.forEach((place, index)=>this.state.store.dispatch({
-          type: 'ADD_ESTABLISHMENT',
-          id: index,
-          data: place
-        }))
-      }).catch(err=>alert(err));
-    } 
-  }
-
-  updateAuth(bool, userId) {
-    this.setState({ isAuth: bool, userId: userId });
-  }
-
-  login() {
-    authUser().then(response=>{
-      this.setState({isAuth: true, userId: response.user});
-      this.state.store.dispatch({
-        type: "ADD_USER",
-        userId: response.user,
-        isAuth: response.isAuth
-      });
-    }).catch(err => alert(err));
-  }
-  logout() {
-    unAuthUser().then(response=>{
-      this.setState({isAuth: false, userId: ''})
-    }).catch(err => alert(err));
+  componentDidUpdate() {
+    console.log(window.location.search);
   }
 
   render() {
@@ -98,21 +55,34 @@ class App extends Component {
        
         <main>
           <div className='container'>
-            <SearchBar getBusinesses={this.getBusinesses} />
+            <SearchBar {...this.props} access_token={this.state.access_token} />
           </div>
         </main>
         <section>
           <div className='container'>
-            <EstablishmentList establishments={this.state.places} isAuth={this.state.isAuth} userId={this.state.userId} login={this.login} logout={this.logout}/>
+            <EstablishmentList {...this.props}/>
           </div>
         </section>
-        <Route path="/callback" render={props => <Auth updateAuth={this.updateAuth} {...props} />}></Route>
-        <aside className={this.state.isAuth ? '' : 'hidden'}>
-          <FriendsList isAuth={this.state.isAuth} userId={this.state.userId}/>
+        <aside className={this.props.auth.isAuth ? '' : 'hidden'}>
+          <FriendsList {...this.props}/>
         </aside>
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps(state) {
+  return {
+    auth: state.auth,
+    search: state.search,
+    establishments: state.establishments
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(actionCreators, dispatch);
+}
+
+const Main = connect(mapStateToProps, mapDispatchToProps)(App);
+
+export default Main;

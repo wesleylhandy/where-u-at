@@ -17,7 +17,7 @@ passport.deserializeUser(function(id, done) {
 passport.use(new TwitterStrategy({
         consumerKey: process.env.TWITTER_CONSUMER_KEY,
         consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-        callbackURL: process.env.NODE_ENV === 'production' ? process.env.TWITTER_CALLBACK_URL : 'http://127.0.0.1:3000/callback'
+        callbackURL: process.env.NODE_ENV === 'production' ? process.env.TWITTER_CALLBACK_URL : 'http://127.0.0.1:3000/'
     },
     function(token, tokenSecret, profile, done) {
         var searchQuery = {

@@ -19,6 +19,7 @@
     "react-router-redux": "^5.0.0-alpha.9",
     "react-url-query": "^1.3.0",
     "redux": "^3.7.2",
+    "redux-persist": "^5.4.0",
     "shortid": "^2.2.8",
     "socket.io": "^2.0.4"
   },
@@ -49,7 +50,7 @@
     ]
   },
   "jest": {
-    "verbose":true,
+    "verbose": true,
     "moduleNameMapper": {
       ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mock__/fileMock.js",
       ".+\\.(css|styl|less|sass|scss|svg)$": "identity-obj-proxy"

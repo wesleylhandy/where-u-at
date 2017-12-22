@@ -17,19 +17,17 @@ export default class Establishment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      establishment: props.establishment,
-      isAuth: props.isAuth,
-      userId: props.userId
+      establishment: props.establishment.place,
+      id: props.id
     }
   }
-  componentDidMount(){
-    
-    this.setState({ establishment: this.props.establishment, isAuth: this.props.isAuth, userId: this.props.userId});
+  componentDidMount(){  
+    this.setState({ establishment: this.props.establishment.place, id: this.props.id});
   }
 
   componentWillReceiveProps(nextProps){
   
-    this.setState({ establishment: nextProps.establishment, isAuth: nextProps.isAuth, userId: nextProps.userId});
+    this.setState({ establishment: nextProps.establishment.place, id: nextProps.id});
   }
 
   renderPhoto(imageUrl) {
@@ -83,7 +81,7 @@ export default class Establishment extends Component {
   }
   render(){
     return (
-      <div className="establishment-card">
+      <div className="establishment-card" data-est-id={this.state.id}>
         <a href={this.state.establishment.url} target="_blank">
           {this.renderPhoto(this.state.establishment.imageUrl)} 
         </a>
@@ -98,7 +96,7 @@ export default class Establishment extends Component {
             {this.renderAddress(this.state.establishment.address.display_address, this.state.establishment.name)}   
             </div>
         </div>
-        <GoingButton yelpId={this.state.establishment.yelpId} login={this.props.login} logout={this.props.logout} isAuth={this.state.isAuth} userId={this.state.userId}/>
+        <GoingButton yelpId={this.state.establishment.yelpId} {...this.props}/>
       </div>
     )
   }
