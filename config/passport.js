@@ -20,7 +20,6 @@ module.exports = function() {
         consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
         includeEmail: true
     }, function(token, tokenSecret, profile, done) {
-        console.log(JSON.stringify(profile, null, 5));
         // update the user if s/he exists or add a new user
         User.upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
             return done(err, user);

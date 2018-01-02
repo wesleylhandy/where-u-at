@@ -16,7 +16,9 @@
     "cookie-parser": "^1.4.3",
     "express": "^4.16.2",
     "express-http-proxy": "^1.1.0",
+    "express-jwt": "^5.3.0",
     "express-session": "^1.15.6",
+    "jsonwebtoken": "^8.1.0",
     "method-override": "^2.3.9",
     "moment": "^2.18.1",
     "mongoose": "^4.13.4",
@@ -29,6 +31,7 @@
     "react": "^16.1.0",
     "react-dom": "^16.1.0",
     "react-router-dom": "^4.2.2",
+    "request": "^2.83.0",
     "socket.io": "^2.0.4",
     "yelp-fusion": "^1.0.4"
   },
@@ -41,7 +44,7 @@
   },
   "scripts": {
     "build": "NODE_ENV=development babel universal.js -o universal-compiled.js && NODE_ENV=development babel client/src -d lib --ignore *.test.js",
-    "start:dev": "concurrently \"nodemon --watch server\" \"npm run client:dev\"",
+    "start:dev": "concurrently \"node server\" \"npm run client:dev\"",
     "start:react": "react-scripts start",
     "start": "concurrently \"NODE_ENV=production npm run server\" \"NODE_ENV=production npm run client\"",
     "server": "node server.js",

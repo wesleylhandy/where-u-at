@@ -1,27 +1,28 @@
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
+const User = require('../models/User');
 
-exports.createToken = function(auth) {
+const createToken = function(auth) {
     return jwt.sign({
         id: auth.id
-    }, 'my-secret', {
+    }, process.env.SIGNATURE_SECRET, {
         expiresIn: 60 * 120
     });
 };
 
-exports.generateToken = function(req, res, next) {
+const generateToken = function(req, res, next) {
     req.token = createToken(req.auth);
     return next();
 };
 
-exports.sendToken = function(req, res) {
+const sendToken = function(req, res) {
     res.setHeader('x-auth-token', req.token);
     return res.status(200).send(JSON.stringify(req.user));
 };
 
 //token handling middleware
-exports.authenticate = expressJwt({
-    secret: 'my-secret',
+const authenticate = expressJwt({
+    secret: process.env.SIGNATURE_SECRET,
     requestProperty: 'auth',
     getToken: function(req) {
         if (req.headers['x-auth-token']) {
@@ -31,7 +32,7 @@ exports.authenticate = expressJwt({
     }
 });
 
-exports.getCurrentUser = function(req, res, next) {
+const getCurrentUser = function(req, res, next) {
     User.findById(req.auth.id, function(err, user) {
         if (err) {
             next(err);
@@ -42,7 +43,7 @@ exports.getCurrentUser = function(req, res, next) {
     });
 };
 
-exports.getOne = function(req, res) {
+const getOne = function(req, res) {
     var user = req.user.toObject();
 
     delete user['twitterProvider'];
@@ -50,3 +51,12 @@ exports.getOne = function(req, res) {
 
     res.json(user);
 };
+
+module.exports = {
+    createToken,
+    generateToken,
+    sendToken,
+    authenticate,
+    getCurrentUser,
+    getOne
+}

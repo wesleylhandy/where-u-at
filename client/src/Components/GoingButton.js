@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import TwitterLogin from 'react-twitter-auth';
 
-import {authUser} from '../utils/helpers';
-
 export default class GoingButton extends Component {
   constructor(props) {
     super(props);
@@ -13,46 +11,46 @@ export default class GoingButton extends Component {
       user: props.userId,
       isAuth: props.isAuth
     }
-    this.handleClick=this.handleClick.bind(this);
+
     this.onFailed = this.onFailed.bind(this);
-    this.onSuccess = this.onSuccess.bind(this)l
+    this.onSuccess = this.onSuccess.bind(this);
     this.logout = this.logout.bind(this);
   }
   componentDidMount() {
-    this.setState({yelpId: this.props.yelpId, isAuth: this.props.isAuth, userId: this.props.userId});
+    this.setState({yelpId: this.props.yelpId, isAuth: this.props.isAuth, user: this.props.userId});
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({isAuth: nextProps.isAuth, userId: nextProps.userId });
-  }
-  handleClick(){
-      authUser().then(res=> console.log({res})).catch(err=> console.error({err}));
+    this.setState({isAuth: nextProps.isAuth, user: nextProps.userId });
   }
 
   onSuccess = (response) => {
-    const token = response.headers.get('x-auth-token');
+    console.log({response})
+    console.log(this.props);
+    const token = response.headers.get('x-auth-token') ;
     response.json().then(user => {
       if (token) {
         this.setState({ isAuth: true, user: user, token: token });
+        this.props.addUser(user.email, true);
       }
-    });
-  };
+    })
+  }
 
   onFailed = (error) => {
     alert(error);
-  };
+  }
 
   logout = () => {
     this.setState({ isAuth: false, token: '', user: null })
-  };
+  }
 
   renderButton(isAuth) {
-    let content = !!isAuth ?
+    let content = isAuth ?
       (
         <div>
           <p>Authenticated</p>
           <div>
-            {this.state.user.email}
+            {this.state.user}
           </div>
           <div>
             <button onClick={this.logout} className="button" >
@@ -64,7 +62,7 @@ export default class GoingButton extends Component {
       (
         <TwitterLogin loginUrl="http://localhost:3001/auth/twitter"
           onFailure={this.onFailed} onSuccess={this.onSuccess}
-          requestTokenUrl="http://localhost:3001//auth/twitter/return" />
+          requestTokenUrl="http://localhost:3001/auth/twitter/return" />
       );
 
     return (

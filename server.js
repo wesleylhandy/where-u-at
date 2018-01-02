@@ -63,7 +63,7 @@ app.set('trust proxy', 1) // trust first proxy
 const month = 1000 * 60 * 60 * 24 * 31;
 app.use(cookieParser());
 app.use(session({
-    secret: 'twentythree@#@#2323',
+    secret: process.env.SIGNATURE_SECRET,
     resave: false,
     saveUninitialized: true,
     cookie: { maxAge: month },

@@ -14,6 +14,10 @@ const UserSchema = new Schema({
         unique: true,
         match: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
     },
+    id: {
+        type: String,
+        required: true
+    },
     twitterProvider: {
         type: {
             id: String,
@@ -33,8 +37,9 @@ UserSchema.statics.upsertTwitterUser = function(token, tokenSecret, profile, cb)
         // no user was found, lets create a new one
         if (!user) {
             var newUser = new that({
-                name: profile.displayName,
+                name: profile.username,
                 email: profile.emails[0].value,
+                id: profile.id,
                 twitterProvider: {
                     id: profile.id,
                     token: token,
