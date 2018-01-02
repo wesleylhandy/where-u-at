@@ -24,6 +24,16 @@ if (process.env.NODE_ENV !== 'production') {
 mongoose.Promise = Promise;
 // Initialize Express Server
 const app = express();
+
+// enable cors
+var corsOption = {
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    exposedHeaders: ['x-auth-token']
+};
+app.use(cors(corsOption));
+
 // Specify the port.
 var port = process.env.PORT || 3001;
 //support gzip
@@ -35,8 +45,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
-app.use(bodyParser.text());
-app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+
 
 app.set('port', port);
 
@@ -61,6 +70,10 @@ app.use(session({
     store: new MongoStore({ mongooseConnection: db })
 }));
 
+const passportConfig = require('./config/passport');
+
+passportConfig();
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -78,12 +91,7 @@ if (process.env.NODE_ENV !== 'production') {
         console.log('');
         next();
     });
-    //enable CORS
-    app.use(cors());
 }
-
-//set up passport for user authentication
-const passportConfig = require('./config/passport');
 
 require("./controllers/auth-controller.js")(app);
 require("./controllers/search-controller.js")(app);
@@ -94,10 +102,6 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
 }
 
-// else {
-//     const proxy = require('express-http-proxy')
-//     app.use('/*', proxy('http://127.0.0.1:3000/'))
-// }
 
 //SERVER SIDE RENDERING
 // const universalLoader = require('./universal-compiled.js');
@@ -110,31 +114,15 @@ const server = app.listen(app.get('port'), function() {
 
 // socket.io server for websockets
 //for future development
-/*const io = require('socket.io')(server);
+const io = require('socket.io')(server);
 
 io.on('connection', function(socket) {
     console.log('a user connected');
 
-    //notify all but caller of new save
-    socket.on('save-event', function(article) {
-        console.log('Save called');
-        socket.broadcast.emit('new-save', { article });
-    });
 
-    //notify all but caller of delete
-    socket.on('remove-event', function(article) {
-        console.log('Remove called');
-        socket.broadcast.emit('new-delete', { article });
-    });
-
-    //notify all but caller of new vote
-    socket.on('vote-event', function(article) {
-        console.log('Vote called');
-        socket.broadcast.emit('new-vote', { article });
-    })
 
     socket.on('disconnect', function() {
         console.log('user disconnected');
     });
 
-});*/
+});

@@ -36,7 +36,7 @@ class App extends Component {
       })
       .catch(err => console.error(err));
 
-    console.log(window.location.search);
+    // console.log(window.location.search);
 
   }
 

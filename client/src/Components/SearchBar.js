@@ -126,7 +126,7 @@ export default class SearchBar extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="search"><img src={locationImg} alt="Label"/></label>
-                        <input type="text" name="search" placeholder="Enter Your City" ref={node => this.input = node} onChange={this.handleInput} onKeyDown={this.handleKeys}/>
+                        <input type="text" name="search" placeholder="Enter Your City" ref={node => this.input = node} onChange={this.handleInput} onKeyDown={this.handleKeys} value={this.state.searchTerm}/>
                         <button className="search-btn"><i className="fa fa-search" aria-hidden="true"></i>&nbsp;Search</button>
                         <div className="location" onTouchStart={this.showTooltip} onMouseEnter={this.showTooltip} onTouchEnd={this.hideTooltip} onMouseLeave={this.hideTooltip} onClick={this.getGeolocation}>
                             <i className={this.state.geolocated ? "fa fa-bullseye" : "fa fa-compass"} aria-hidden="true"></i>

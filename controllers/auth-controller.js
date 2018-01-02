@@ -1,8 +1,6 @@
 const router = require('express').Router();
 const passport = require('passport');
 const yelp = require('yelp-fusion');
-const middleware = require('./../config/middleware');
-const User = require('../models/User');
 const Token = require('../models/Token');
 
 module.exports = function(app) {
@@ -66,27 +64,15 @@ module.exports = function(app) {
 
     router.get('/twitter', passport.authenticate('twitter'));
 
-    router.get('/twitter/callback',
-        passport.authenticate('twitter', {
-            successRedirect: '/auth/twittersuccess',
-            failureRedirect: '/auth/twitterfail'
-        })
-    );
-
-    router.get('/twittersuccess', function(req, res) {
-        // Successful authentication
-        res.json({ user: req.user, isAuth: true });
-    })
-
-
-    router.get('/twitterfail', function(req, res) {
-        res.statusCode = 503;
-        res.json({ err: 'Unable to Validate User Credentials' })
+    router.get('/twitter/return', passport.authenticate('twitter'), function(req, res) {
+        console.log(req.user);
+        res.redirect('/');
     })
 
     router.post('/logout', function(req, res) {
         req.logout();
-        res.send({ message: 'Logged Out' });
+
+        res.redirect('/');
     });
 
     app.use('/auth', router);

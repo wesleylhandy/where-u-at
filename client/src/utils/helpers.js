@@ -13,12 +13,7 @@ export function getSession() {
 
 export function authUser() {
     return new Promise((resolve, reject) => {
-        axios.get('/auth/twitter', {
-            proxy: {
-                host: '127.0.0.1',
-                port: 3001
-            }
-        }).then(response => {
+        axios.get('/auth/twitter').then(response => {
             resolve(response.data);
         }).catch(err => {
             console.error({ twitterAuthErr: err })

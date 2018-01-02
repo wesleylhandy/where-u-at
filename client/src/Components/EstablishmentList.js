@@ -24,7 +24,7 @@ export default class EstablishmentList extends Component {
   }
 
   renderEstablishments(establishments = []){
-    console.log({establishments})
+    // console.log({establishments})
      return establishments.map(est=> (
       <li key={est.id}>
         <Establishment establishment={est} id={est.id} {...this.props}/>

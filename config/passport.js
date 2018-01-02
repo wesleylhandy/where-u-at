@@ -1,5 +1,5 @@
 const passport = require('passport');
-const TwitterStrategy = require('passport-twitter').Strategy;
+const TwitterTokenStrategy = require('passport-twitter-token');
 const User = require('./../models/User');
 
 passport.serializeUser(function(user, done) {
@@ -14,30 +14,16 @@ passport.deserializeUser(function(id, done) {
     });
 });
 
-passport.use(new TwitterStrategy({
+module.exports = function() {
+    passport.use(new TwitterTokenStrategy({
         consumerKey: process.env.TWITTER_CONSUMER_KEY,
         consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
-        callbackURL: process.env.NODE_ENV === 'production' ? process.env.TWITTER_CALLBACK_URL : 'http://127.0.0.1:3000/'
-    },
-    function(token, tokenSecret, profile, done) {
-        var searchQuery = {
-            name: profile.displayName
-        };
-        var updates = {
-            name: profile.displayName,
-            twitterId: profile.id
-        };
-        var options = {
-            upsert: true
-        };
+        includeEmail: true
+    }, function(token, tokenSecret, profile, done) {
         console.log(JSON.stringify(profile, null, 5));
         // update the user if s/he exists or add a new user
-        User.findOneAndUpdate(searchQuery, updates, options, function(err, user) {
-            if (err) {
-                return done(err, null);
-            } else {
-                return done(null, user);
-            }
+        User.upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
+            return done(err, user);
         });
-    }
-));
+    }));
+}
