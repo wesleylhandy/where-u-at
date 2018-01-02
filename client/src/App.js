@@ -30,18 +30,18 @@ class App extends Component {
       this.setState({access_token: response.access_token});
     }).catch(err=>alert(err));
     
-    getSession()
-      .then(res => {
-        this.props.addUser(res.user, res.isAuth === true ? true : false);
-      })
-      .catch(err => console.error(err));
+    // getSession()
+    //   .then(res => {
+    //     this.props.addUser(res.user, res.isAuth === true ? true : false);
+    //   })
+    //   .catch(err => console.error(err));
 
     // console.log(window.location.search);
 
   }
 
   componentDidUpdate() {
-    console.log(window.location.search);
+
   }
 
   render() {

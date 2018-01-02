@@ -63,6 +63,13 @@ export function getYelpToken() {
     })
 }
 
+/**
+ * 
+ * @param {Boolean} geolocated - true if location is an Object, false if String
+ * @param {Object|String} location 
+ * @param {String} access_token 
+ * @returns {Promise}
+ */
 export function getYelpResults(geolocated, location, access_token) {
     return new Promise((resolve, reject) => {
         if (geolocated) {

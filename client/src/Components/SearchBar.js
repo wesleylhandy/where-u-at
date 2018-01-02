@@ -23,6 +23,17 @@ export default class SearchBar extends Component {
         
     }
 
+    componentDidMount() {
+        this.input.value = this.props.current_search
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if(nextProps.current_search !== this.state.searchTerm) {
+            this.setState({searchTerm: nextProps.current_search});
+            this.input.value = nextProps.current_search;
+        }
+    }
+
     hideTooltip() {
         this.setState({showTooltip: false});
     }
@@ -81,7 +92,7 @@ export default class SearchBar extends Component {
 
         const geolocation = /^[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?),\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)$/.test(search);
 
-        let latitude, longitude;
+        let latitude = '', longitude = '';
         if(geolocation) {
             latitude = search.split(',')[0].trim();
             longitude = search.split(',')[1].trim();
@@ -89,8 +100,13 @@ export default class SearchBar extends Component {
         this.props.addSearch(geolocation ? { latitude, longitude } : search, geolocation);
         this.getBusinesses(geolocation ? {latitude, longitude} : search, geolocation)
     }
-
+    /**
+     * calls YELP API which will update state if any results are found
+     * @param {Object|String} location 
+     * @param {Boolean} geolocated 
+     */
     getBusinesses(location, geolocated) {
+        console.log({location});
         var access_token = this.state.access_token || '';
         if (access_token) {
             getYelpResults(geolocated, location, access_token).then(response => {
@@ -126,7 +142,7 @@ export default class SearchBar extends Component {
                 <form onSubmit={this.handleSubmit}>
                     <div className="form-group">
                         <label htmlFor="search"><img src={locationImg} alt="Label"/></label>
-                        <input type="text" name="search" placeholder="Enter Your City" ref={node => this.input = node} onChange={this.handleInput} onKeyDown={this.handleKeys} value={this.state.searchTerm}/>
+                        <input type="text" name="search" placeholder="Enter Your City" ref={node => this.input = node} onChange={this.handleInput} onKeyDown={this.handleKeys} />
                         <button className="search-btn"><i className="fa fa-search" aria-hidden="true"></i>&nbsp;Search</button>
                         <div className="location" onTouchStart={this.showTooltip} onMouseEnter={this.showTooltip} onTouchEnd={this.hideTooltip} onMouseLeave={this.hideTooltip} onClick={this.getGeolocation}>
                             <i className={this.state.geolocated ? "fa fa-bullseye" : "fa fa-compass"} aria-hidden="true"></i>

@@ -8,8 +8,8 @@ export default class GoingButton extends Component {
       numGoing: 0,
       yelpId: props.yelpId,
       going: false,
-      user: props.userId,
-      isAuth: props.isAuth
+      user: props.auth.userId,
+      isAuth: props.auth.isAuth
     }
 
     this.onFailed = this.onFailed.bind(this);
@@ -17,11 +17,11 @@ export default class GoingButton extends Component {
     this.logout = this.logout.bind(this);
   }
   componentDidMount() {
-    this.setState({yelpId: this.props.yelpId, isAuth: this.props.isAuth, user: this.props.userId});
+    this.setState({yelpId: this.props.yelpId, isAuth: this.props.auth.isAuth, user: this.props.auth.userId});
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({isAuth: nextProps.isAuth, user: nextProps.userId });
+    this.setState({isAuth: nextProps.auth.isAuth, user: nextProps.auth.userId });
   }
 
   onSuccess = (response) => {
@@ -29,9 +29,10 @@ export default class GoingButton extends Component {
     console.log(this.props);
     const token = response.headers.get('x-auth-token') ;
     response.json().then(user => {
+      console.log({user});
       if (token) {
-        this.setState({ isAuth: true, user: user, token: token });
-        this.props.addUser(user.email, true);
+        this.setState({ isAuth: true, user: user.username, token: token });
+        this.props.addUser(user.username, true);
       }
     })
   }
@@ -42,6 +43,7 @@ export default class GoingButton extends Component {
 
   logout = () => {
     this.setState({ isAuth: false, token: '', user: null })
+    this.props.removeUser();
   }
 
   renderButton(isAuth) {
