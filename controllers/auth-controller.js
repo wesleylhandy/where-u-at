@@ -80,7 +80,6 @@ module.exports = function(app) {
                     return res.status(500).send({ message: err.message });
                 }
 
-                console.log(body);
                 const bodyString = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
                 const parsedBody = JSON.parse(bodyString);
 
@@ -94,11 +93,14 @@ module.exports = function(app) {
             if (!req.user) {
                 return res.status(401).send('User Not Authenticated');
             }
-
+            console.log({user: req.user, session: req.session})
             // prepare token for API
             req.auth = {
                 id: req.user.id
             };
+
+            req.session.username = req.user.username;
+            req.session.save();
 
             return next();
         }, generateToken, sendToken);
@@ -114,10 +116,23 @@ module.exports = function(app) {
                 }
             }, function(err, r, body) {
                 if (err) {
+                    req.session.username = '';
+                    req.session.isAuth = false;
+                    req.session.oauth_token = '';
+                    req.session.oauth_token_secret = '';
+                    req.session.save()
                     return res.status(500).send({ message: err.message });
+                    
                 }
-                console.log({ twitterReturn: body });
-                // req.session.save();
+
+                const oauthParams = body.split('&');
+                const oauth_token = oauthParams[0].split('=')[1];
+                const oauth_token_secret = oauthParams[1].split('=')[1];
+
+                req.session.isAuth = true;
+                req.session.oauth_token = oauth_token;
+                req.session.oauth_token_secret = oauth_token_secret;
+                req.session.save();
                 var jsonStr = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
                 res.send(JSON.parse(jsonStr));
             });

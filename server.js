@@ -86,7 +86,7 @@ if (process.env.NODE_ENV !== 'production') {
         console.log(req.session);
         console.log('');
         console.log('Logged In: ');
-        console.log('__________ ' + req.isAuthenticated());
+        console.log('__________ ' + req.user);
         console.log('**********************************************');
         console.log('');
         next();

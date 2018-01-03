@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import TwitterLogin from 'react-twitter-auth';
+import moment from 'moment';
 
 export default class GoingButton extends Component {
   constructor(props) {
@@ -31,8 +32,9 @@ export default class GoingButton extends Component {
     response.json().then(user => {
       console.log({user});
       if (token) {
-        this.setState({ isAuth: true, user: user.username, token: token });
+        this.setState({ isAuth: true, user: user.username, token: token, going: true });
         this.props.addUser(user.username, true);
+        this.props.addGoing(this.state.yelpId, user.username, moment().format('MM-DD-YYYY'), true)
       }
     })
   }
@@ -42,12 +44,12 @@ export default class GoingButton extends Component {
   }
 
   logout = () => {
-    this.setState({ isAuth: false, token: '', user: null })
-    this.props.removeUser();
+    this.setState({ isAuth: false, token: '', user: null, going: false })
+    this.props.removeGoing(this.state.yelpId, this.state.user, true);
   }
 
-  renderButton(isAuth) {
-    let content = isAuth ?
+  renderButton(isAuth, going) {
+    let content = isAuth && going ?
       (
         <div>
           <p>Authenticated</p>
@@ -55,15 +57,20 @@ export default class GoingButton extends Component {
             {this.state.user}
           </div>
           <div>
-            <button onClick={this.logout} className="button" >
-              Log out
+            <button onClick={this.logout} className="going-btn checked" >
+              Leave
           </button>
           </div>
         </div>
       ) :
       (
-        <TwitterLogin loginUrl="http://localhost:3001/auth/twitter"
-          onFailure={this.onFailed} onSuccess={this.onSuccess}
+        <TwitterLogin 
+          loginUrl="http://localhost:3001/auth/twitter" 
+          className='going-btn'
+          onFailure={this.onFailed} 
+          onSuccess={this.onSuccess} 
+          text="Add Going"
+          showIcon={false}
           requestTokenUrl="http://localhost:3001/auth/twitter/return" />
       );
 
@@ -77,7 +84,7 @@ export default class GoingButton extends Component {
   render(){
     return (
       <div className="btn-group">
-        {this.renderButton(this.state.isAuth)}
+        {this.renderButton(this.state.isAuth, this.state.going)}
         <div className="counter">{this.state.numGoing}</div>
       </div>
     )
