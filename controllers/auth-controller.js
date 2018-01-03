@@ -8,20 +8,6 @@ const { generateToken, sendToken } = require('../config/token');
 
 module.exports = function(app) {
 
-    router.get('/session', function(req, res) {
-        if (process.env.NODE_ENV !== 'production') {
-            //log of session data retrieved from request for setting state
-            console.log('----------/api/session----------');
-            console.log({ authenticated: req.isAuthenticated() });
-            console.log({ user: req.user });
-            console.log('--------------------------------');
-        }
-
-        if (req.isAuthenticated()) {
-            res.json({ user: req.user, isAuth: true })
-        } else res.json({ user: req.session.username, isAuth: false })
-    });
-
     router.get('/getYelpToken', function(req, res) {
         Token.findOne().then(function(token) {
             res.json({ access_token: token.access_token })
@@ -93,14 +79,10 @@ module.exports = function(app) {
             if (!req.user) {
                 return res.status(401).send('User Not Authenticated');
             }
-            console.log({user: req.user, session: req.session})
             // prepare token for API
             req.auth = {
                 id: req.user.id
             };
-
-            req.session.username = req.user.username;
-            req.session.save();
 
             return next();
         }, generateToken, sendToken);
@@ -116,23 +98,15 @@ module.exports = function(app) {
                 }
             }, function(err, r, body) {
                 if (err) {
-                    req.session.username = '';
-                    req.session.isAuth = false;
-                    req.session.oauth_token = '';
-                    req.session.oauth_token_secret = '';
-                    req.session.save()
+
                     return res.status(500).send({ message: err.message });
-                    
+
                 }
 
                 const oauthParams = body.split('&');
                 const oauth_token = oauthParams[0].split('=')[1];
                 const oauth_token_secret = oauthParams[1].split('=')[1];
 
-                req.session.isAuth = true;
-                req.session.oauth_token = oauth_token;
-                req.session.oauth_token_secret = oauth_token_secret;
-                req.session.save();
                 var jsonStr = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
                 res.send(JSON.parse(jsonStr));
             });
@@ -141,7 +115,7 @@ module.exports = function(app) {
     router.post('/logout', function(req, res) {
         req.logout();
 
-        res.redirect('/');
+        res.json({ user: null, isAuth: false });
     });
 
     app.use('/auth', router);

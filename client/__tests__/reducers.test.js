@@ -9,11 +9,29 @@ const testAddUser = () => {
     const stateBefore = {};
     const action = {
         type: 'ADD_USER',
-        userId: 'wesleylhandy'
+        user: {
+            name: 'wesleylhandy',
+            email: 'werwe@ere.com',
+            id: '6546546546',
+            twitterProvider: {
+                id: '6546546546',
+                token: 'aadf',
+                tokenSecret: 'adfa'
+            }
+        }
     }
     const stateAfter = {
         isAuth: true,
-        userId: 'wesleylhandy'
+        user: {
+            name: 'wesleylhandy',
+            email: 'werwe@ere.com',
+            id: '6546546546',
+            twitterProvider: {
+                id: '6546546546',
+                token: 'aadf',
+                tokenSecret: 'adfa'
+            }
+        }
     }
     deepFreeze(stateBefore);
     deepFreeze(action);
@@ -26,14 +44,23 @@ const testAddUser = () => {
 const testRemoveUser = () => {
         const stateBefore = {
             isAuth: true,
-            userId: 'wesleylhandy'
+            user: {
+                name: 'wesleylhandy',
+                email: 'werwe@ere.com',
+                id: '6546546546',
+                twitterProvider: {
+                    id: '6546546546',
+                    token: 'aadf',
+                    tokenSecret: 'adfa'
+                }
+            }
         }
         const action = {
             type: 'REMOVE_USER'
         }
         const stateAfter = {
             isAuth: false,
-            userId: ''
+            user: {}
         }
         deepFreeze(stateBefore);
         deepFreeze(action);
@@ -94,7 +121,7 @@ const testAddEstablishment = () => {
     const action = {
         type: 'ADD_ESTABLISHMENT',
         id: 1,
-        data: {
+        place: {
             name: 'Starbucks',
             imageUrl: 'http://lorempixel.com/business',
             rating: 3.5,
@@ -105,7 +132,7 @@ const testAddEstablishment = () => {
     }
     const stateAfter = [{
         id: 1,
-        data: {
+        place: {
             name: 'Starbucks',
             imageUrl: 'http://lorempixel.com/business',
             rating: 3.5,
@@ -130,7 +157,7 @@ const testAddEstablishments = () => {
         type: 'ADD_ESTABLISHMENTS',
         places: [{
             id: 'aadf1234',
-            data: {
+            place: {
                 name: 'Starbucks',
                 imageUrl: 'http://lorempixel.com/business',
                 rating: 3.5,
@@ -139,7 +166,7 @@ const testAddEstablishments = () => {
             }
         }, {
             id: 'abbc3456',
-            data: {
+            place: {
                 name: 'Dunkin Donuts',
                 imageUrl: 'http://lorempixel.com/business',
                 rating: 3,
@@ -151,7 +178,7 @@ const testAddEstablishments = () => {
 
     const stateAfter = [{
         id: 'aadf1234',
-        data: {
+        place: {
             name: 'Starbucks',
             imageUrl: 'http://lorempixel.com/business',
             rating: 3.5,
@@ -161,7 +188,7 @@ const testAddEstablishments = () => {
         going: []
     }, {
         id: 'abbc3456',
-        data: {
+        place: {
             name: 'Dunkin Donuts',
             imageUrl: 'http://lorempixel.com/business',
             rating: 3,

@@ -9,7 +9,7 @@ export default class SearchBar extends Component {
         this.state = {
             geolocated: props.search.geolocated,
             showTooltip: false,
-            searchTerm: props.search.current_search,
+            searchTerm: typeof props.search.current_search === 'object' ? Object.values(props.search.current_search).join(',') : props.search.current_search,
             access_token: props.access_token,
             totalPlaces: 0
         }
@@ -24,13 +24,16 @@ export default class SearchBar extends Component {
     }
 
     componentDidMount() {
-        this.input.value = this.props.current_search
+        this.input.value = typeof this.props.search.current_search === 'object' ? Object.values(this.props.search.current_search).join(',') : this.props.search.current_search
     }
 
     componentWillReceiveProps(nextProps) {
-        if(nextProps.current_search !== this.state.searchTerm) {
-            this.setState({searchTerm: nextProps.current_search});
-            this.input.value = nextProps.current_search;
+        if(nextProps.search.current_search !== this.state.searchTerm) {
+            this.setState({ searchTerm: typeof nextProps.search.current_search === 'object' ? Object.values(nextProps.search.current_search).join(',') : nextProps.search.current_search});
+            this.input.value = typeof nextProps.search.current_search === 'object' ? Object.values(nextProps.search.current_search).join(',') : nextProps.search.current_search;
+        }
+        if (nextProps.access_token !== this.state.access_token) {
+            this.setState({ access_token: nextProps.access_token });
         }
     }
 
@@ -106,10 +109,11 @@ export default class SearchBar extends Component {
      * @param {Boolean} geolocated 
      */
     getBusinesses(location, geolocated) {
-        console.log({location});
+
         var access_token = this.state.access_token || '';
         if (access_token) {
             getYelpResults(geolocated, location, access_token).then(response => {
+
                 // console.log({yelpResults: response.places.map((place, id)=> {return {id, place}})});
                 this.props.addEstablishments(response.places.map((place, id) => { 
                     return { id, place } 
@@ -122,18 +126,6 @@ export default class SearchBar extends Component {
                 this.props.removeSearch();
             });
         }
-    }
-
-    componentDidMount() {
-        // console.log({SearchBarState: this.state, SearchBarProps: this.props})
-    }
-
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.access_token !== this.state.access_token) {
-            this.setState({access_token: nextProps.access_token});
-        }
-
-        // console.log({ NewPropsSearchBarState: this.state, NewPropsSearchBarProps: nextProps })
     }
 
     render() {

@@ -64,7 +64,7 @@ const establishment = (state = [], action) => {
 
             return {
                 ...state,
-                going: state.going.filter(go => go.peep !== action.peep)
+                going: [...state.going.filter(go => go.peep !== action.peep)]
             }
 
         default:

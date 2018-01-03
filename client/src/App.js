@@ -10,7 +10,7 @@ import SearchBar from './Components/SearchBar.js';
 import EstablishmentList from './Components/EstablishmentList.js';
 import FriendsList from './Components/FriendsList.js';
 
-import {getYelpToken, getSession} from './utils/helpers.js';
+import {getYelpToken, unAuthUser} from './utils/helpers.js';
 
 class App extends Component {
   constructor(props){
@@ -20,7 +20,7 @@ class App extends Component {
       totalPlaces: 0,
       ...props
     }
-
+    this.logout = this.logout.bind(this);
   }
 
   componentDidMount() {
@@ -30,18 +30,12 @@ class App extends Component {
       this.setState({access_token: response.access_token});
     }).catch(err=>alert(err));
     
-    // getSession()
-    //   .then(res => {
-    //     this.props.addUser(res.user, res.isAuth === true ? true : false);
-    //   })
-    //   .catch(err => console.error(err));
-
-    // console.log(window.location.search);
-
   }
 
-  componentDidUpdate() {
-
+  logout() {
+    unAuthUser().then(response => {
+      this.props.removeUser()
+    }).catch(err => console.error({logoutError: err}));
   }
 
   render() {
@@ -51,6 +45,7 @@ class App extends Component {
           {/*<Logo className="App-logo" alt="logo" /> */}
           <h1 className="App-title">Where U @ ?</h1>
           <h4 className='App-subtitle'>An App for Connecting With Groups of Friends in Public</h4>
+          <a className={this.props.auth.isAuth ? "logout" : "hidden"} onClick={this.logout}>→Log Out</a>
         </header>
        
         <main>

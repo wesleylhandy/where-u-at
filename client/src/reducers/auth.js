@@ -13,13 +13,13 @@ const auth = (state = {}, action) => {
             return {
                 ...state,
                 isAuth: true,
-                userId: action.userId
+                user: {...action.user }
             }
         case 'REMOVE_USER':
             return {
                 ...state,
                 isAuth: false,
-                userId: ''
+                user: {}
             }
         default:
             return state

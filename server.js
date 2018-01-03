@@ -10,7 +10,7 @@ const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
 const mongoose = require('mongoose');
-const MongoStore = require('connect-mongo')(session);
+
 
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').load();
@@ -66,8 +66,7 @@ app.use(session({
     secret: process.env.SIGNATURE_SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { maxAge: month },
-    store: new MongoStore({ mongooseConnection: db })
+    cookie: { maxAge: month }
 }));
 
 const passportConfig = require('./config/passport');
@@ -77,21 +76,6 @@ passportConfig();
 app.use(passport.initialize());
 app.use(passport.session());
 
-//middleware to display session data in console - remove for production
-if (process.env.NODE_ENV !== 'production') {
-    //log SESSION
-    app.use(function(req, res, next) {
-        console.log('');
-        console.log('*************SESSION MIDDLEWARE***************');
-        console.log(req.session);
-        console.log('');
-        console.log('Logged In: ');
-        console.log('__________ ' + req.user);
-        console.log('**********************************************');
-        console.log('');
-        next();
-    });
-}
 
 require("./controllers/auth-controller.js")(app);
 require("./controllers/search-controller.js")(app);
@@ -102,14 +86,13 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
 }
 
-
 //SERVER SIDE RENDERING
 // const universalLoader = require('./universal-compiled.js');
 // app.use('/', universalLoader);
 
 // Listen on port 3000 or assigned port
 const server = app.listen(app.get('port'), function() {
-    console.log(`App running on ${app.get('port')}`);
+    console.log(`Somewhere in quadrant ${app.get('port')}, someone is listening...`);
 });
 
 // socket.io server for websockets
@@ -118,8 +101,6 @@ const io = require('socket.io')(server);
 
 io.on('connection', function(socket) {
     console.log('a user connected');
-
-
 
     socket.on('disconnect', function() {
         console.log('user disconnected');

@@ -1,14 +1,14 @@
 /**
  * Returns an object that will be dispacthed to the Redux Store for Adding a User
- * @param {String} userId - userId from Twitter, if any
+ * @param {Object} user - Twitter User Object
  * @param {Boolean} isAuth - set to true if authorized with Twitter
  * @returns {Object}
  */
-export const addUser = (userId, isAuth) => {
+export const addUser = (user, isAuth) => {
     if (isAuth)
         return {
             type: 'ADD_USER',
-            userId,
+            user,
             isAuth
         }
     else return {

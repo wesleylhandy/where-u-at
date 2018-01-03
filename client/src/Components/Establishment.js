@@ -17,17 +17,18 @@ export default class Establishment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      establishment: props.establishment.place,
+      establishment: props.establishment.place.place,
+      going: [...props.establishment.going],
       id: props.id
     }
   }
   componentDidMount(){  
-    this.setState({ establishment: this.props.establishment.place, id: this.props.id});
+    this.setState({ establishment: this.props.establishment.place.place, id: this.props.id, going: this.props.establishment.going});
   }
 
   componentWillReceiveProps(nextProps){
   
-    this.setState({ establishment: nextProps.establishment.place, id: nextProps.id});
+    this.setState({ establishment: nextProps.establishment.place.place, id: nextProps.id, going: nextProps.establishment.going});
   }
 
   renderPhoto(imageUrl) {
@@ -96,7 +97,7 @@ export default class Establishment extends Component {
             {this.renderAddress(this.state.establishment.address.display_address, this.state.establishment.name)}   
             </div>
         </div>
-        <GoingButton yelpId={this.state.establishment.yelpId} {...this.props}/>
+        <GoingButton id={this.state.id} yelpId={this.state.establishment.yelpId} goingPeeps={this.state.going} {...this.props}/>
       </div>
     )
   }

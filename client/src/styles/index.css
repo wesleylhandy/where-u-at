@@ -22,6 +22,7 @@ body {
     padding: 20px;
     color: #e6e7e8;
     border-bottom: 3px solid #db1d46;
+    position: relative;
 }
 
 .App-title {
@@ -30,6 +31,13 @@ body {
 
 .App-intro {
     font-size: large;
+}
+
+.logout {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: #e6e7e8aa;
 }
 
 @keyframes App-logo-spin {
@@ -125,11 +133,30 @@ main {
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 250ms linear;
 }
 
 .btn-group .going-btn.checked {
     background: #e6e7e8;
     color: #e2396a;
+}
+
+.btn-group {
+    position: relative;
+}
+
+.counter {
+    position: absolute;
+    margin-top: 5px;
+    left: calc(50% + 3.75px);
+    transform: translateX(-50%);
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    background: #bcbcbc;
+    color: white;
+    font-weight: 700;
 }
 
 ul {
@@ -175,6 +202,7 @@ ul {
 .establishment-card__info--address-block a {
     text-decoration: none;
     color: #202020;
+    transition: all 250ms linear;
 }
 
 .establishment-card__info--address-block a:hover {

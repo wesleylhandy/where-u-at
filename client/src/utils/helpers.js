@@ -1,27 +1,15 @@
 import axios from 'axios';
 
-export function getSession() {
-    return new Promise((resolve, reject) => {
-        axios.get('/auth/session').then(response => {
-            resolve(response.data);
-        }).catch(err => {
-            if (err) reject(err.response.data);
-            else reject({ title: 'Error', message: 'Service Unavailable - Please try again later.' });
-        });
-    });
-}
-
-export function authUser() {
-    return new Promise((resolve, reject) => {
-        axios.get('/auth/twitter').then(response => {
-            resolve(response.data);
-        }).catch(err => {
-            console.error({ twitterAuthErr: err })
-            if (err) reject(err);
-            else reject({ title: 'Error', message: 'Service Unavailable - Please try again later.' });
-        });
-    });
-}
+// export function getSession() {
+//     return new Promise((resolve, reject) => {
+//         axios.get('/auth/session').then(response => {
+//             resolve(response.data);
+//         }).catch(err => {
+//             if (err) reject(err.response.data);
+//             else reject({ title: 'Error', message: 'Service Unavailable - Please try again later.' });
+//         });
+//     });
+// }
 
 export function unAuthUser() {
     return new Promise((resolve, reject) => {
