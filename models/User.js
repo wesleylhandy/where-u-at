@@ -18,6 +18,10 @@ const UserSchema = new Schema({
         type: String,
         required: true
     },
+    imageUrl: {
+        type: String,
+        required: true
+    },
     twitterProvider: {
         type: {
             id: String,
@@ -40,6 +44,7 @@ UserSchema.statics.upsertTwitterUser = function(token, tokenSecret, profile, cb)
                 name: profile.username,
                 email: profile.emails[0].value,
                 id: profile.id,
+                imageUrl: profile.profile_image_url_https,
                 twitterProvider: {
                     id: profile.id,
                     token: token,
@@ -49,11 +54,12 @@ UserSchema.statics.upsertTwitterUser = function(token, tokenSecret, profile, cb)
 
             newUser.save(function(error, savedUser) {
                 if (error) {
-                    console.log(error);
+                    console.error({newUserUpsertError: error});
                 }
                 return cb(error, savedUser);
             });
         } else {
+
             return cb(err, user);
         }
     });

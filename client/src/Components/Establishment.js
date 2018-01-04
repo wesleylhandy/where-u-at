@@ -17,18 +17,17 @@ export default class Establishment extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      establishment: props.establishment.place.place,
+      establishment: {...props.establishment.place.place},
       going: [...props.establishment.going],
       id: props.id
     }
   }
   componentDidMount(){  
-    this.setState({ establishment: this.props.establishment.place.place, id: this.props.id, going: this.props.establishment.going});
+    this.setState({ establishment: {...this.props.establishment.place.place}, id: this.props.id, going: [...this.props.establishment.going]});
   }
 
   componentWillReceiveProps(nextProps){
-  
-    this.setState({ establishment: nextProps.establishment.place.place, id: nextProps.id, going: nextProps.establishment.going});
+    this.setState({ establishment: nextProps.establishment.place.place, id: nextProps.id, going: [...nextProps.establishment.going]});
   }
 
   renderPhoto(imageUrl) {

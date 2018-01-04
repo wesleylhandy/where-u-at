@@ -20,13 +20,15 @@ export default class EstablishmentList extends Component {
   // }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ establishments: nextProps.establishments, isAuth: nextProps.auth.isAuth, userId: nextProps.auth.userId});
+    if (JSON.stringify(nextProps.establishments) !== JSON.stringify(this.state.establishments)) {
+      this.setState({ establishments: nextProps.establishments});
+    }
   }
 
   renderEstablishments(establishments = []){
-    // console.log({establishments})
+    console.log({establishments})
      return establishments.map(est=> (
-      <li key={est.id}>
+      <li key={est.place.id}>
         <Establishment establishment={est} id={est.id} {...this.props}/>
       </li>
       )

@@ -90,3 +90,32 @@ export function addGoingApi(yelpId, searchDate, peep) {
         })
     })
 }
+
+/**
+ * 
+ * @param {String} yelpId - id of business to add going
+ * @param {String} searchDate - Date formatted as MM-DD-YYYY
+ * @param {String} peep - ObjectID of user being added on this date
+ * @returns {Promise}
+ */
+export function removeGoingApi(yelpId, searchDate, peep) {
+    return new Promise((resolve, reject) => {
+        axios.put(`/api/going/remove/${yelpId}`, {searchDate, peep}).then(response=>{
+            resolve(response.data)
+        }).catch(err => {
+            console.error({helperError: err, location: 'removeGoingApi'});
+            reject({title: 'Error', message: err.message });
+        })
+    })
+}
+
+export function getGoingApi(yelpId, searchDate) {
+    return new Promise((resolve, reject) => {
+        axios.get(`/api/going?yelpId=${yelpId}&searchDate=${searchDate}`).then(response=>{
+            resolve(response.data)
+        }).catch(err=>{
+            console.error({helperError: err, location: 'getGoingApi'});
+            reject({title: 'Error', message: err.message})
+        })
+    })
+}

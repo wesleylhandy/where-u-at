@@ -30,7 +30,7 @@ const PlaceSchema = new Schema({
         }
     },
     going: [{
-        searchDate: Date,
+        searchDate: String,
         peep: { type: Schema.Types.ObjectId, ref: 'User' }
     }]
 });

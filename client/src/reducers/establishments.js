@@ -40,6 +40,10 @@ const establishments = (state = [], action) => {
                     ...state.map(place => place.id === action.placeId ? establishment(place, action) : place)
                 ]
             } else return state;
+        case 'REMOVE_OLD_GOING' :
+            return [
+                ...state.map(place => place.id === action.placeId ? establishment(place, action) : place)
+            ]
         default:
             return state;
     }
@@ -65,6 +69,12 @@ const establishment = (state = [], action) => {
             return {
                 ...state,
                 going: [...state.going.filter(go => go.peep !== action.peep)]
+            }
+
+        case 'REMOVE_OLD_GOING' :
+            return {
+                ...state,
+                going: [...state.going.filter(go => go.searchDate !== action.searchDate)]
             }
 
         default:

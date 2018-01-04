@@ -9,7 +9,7 @@ export default class SearchBar extends Component {
         this.state = {
             geolocated: props.search.geolocated,
             showTooltip: false,
-            searchTerm: typeof props.search.current_search === 'object' ? Object.values(props.search.current_search).join(',') : props.search.current_search,
+            searchTerm: typeof props.search.current_search === 'object' ? Object.values(props.search.current_search).join(', ') : props.search.current_search,
             access_token: props.access_token,
             totalPlaces: 0
         }
@@ -24,13 +24,13 @@ export default class SearchBar extends Component {
     }
 
     componentDidMount() {
-        this.input.value = typeof this.props.search.current_search === 'object' ? Object.values(this.props.search.current_search).join(',') : this.props.search.current_search
+        this.input.value = typeof this.props.search.current_search === 'object' ? Object.values(this.props.search.current_search).join(', ') : this.props.search.current_search
     }
 
     componentWillReceiveProps(nextProps) {
         if(nextProps.search.current_search !== this.state.searchTerm) {
-            this.setState({ searchTerm: typeof nextProps.search.current_search === 'object' ? Object.values(nextProps.search.current_search).join(',') : nextProps.search.current_search});
-            this.input.value = typeof nextProps.search.current_search === 'object' ? Object.values(nextProps.search.current_search).join(',') : nextProps.search.current_search;
+            this.setState({ searchTerm: typeof nextProps.search.current_search === 'object' ? Object.values(nextProps.search.current_search).join(', ') : nextProps.search.current_search});
+            this.input.value = typeof nextProps.search.current_search === 'object' ? Object.values(nextProps.search.current_search).join(', ') : nextProps.search.current_search;
         }
         if (nextProps.access_token !== this.state.access_token) {
             this.setState({ access_token: nextProps.access_token });

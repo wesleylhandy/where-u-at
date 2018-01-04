@@ -137,3 +137,11 @@ export const removeGoing = (id, userName, isAuth) => {
         isAuth
     }
 }
+
+export const removeOldGoing = (id, date) => {
+    return {
+        type: 'REMOVE_OLD_GOING',
+        placeId: id,
+        searchDate: date
+    }
+}

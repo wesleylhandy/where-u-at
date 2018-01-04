@@ -45,7 +45,13 @@ class App extends Component {
           {/*<Logo className="App-logo" alt="logo" /> */}
           <h1 className="App-title">Where U @ ?</h1>
           <h4 className='App-subtitle'>An App for Connecting With Groups of Friends in Public</h4>
-          <a className={this.props.auth.isAuth ? "logout" : "hidden"} onClick={this.logout}>→Log Out</a>
+          <a className={this.props.auth.isAuth ? "logout" : "hidden"} onClick={this.logout}>
+            →Log Out
+            <img src={this.props.auth.isAuth ? this.props.auth.user.imageUrl: ''} 
+              alt="Profile Image" 
+              className='profile-image'
+            />
+          </a>
         </header>
        
         <main>
