@@ -59,7 +59,7 @@ function upsertPlaces(places) {
 
         for (let i = 0; i < len; i++) {
 
-            Place.findOneAndUpdate({ 'place.yelpId': places[i].place.yelpId }, places[i].place, { new: true, upsert: true }, function(err, insertedPlace) {
+            Place.findOneAndUpdate({ 'place.yelpId': places[i].place.yelpId }, {place: places[i].place}, { new: true, upsert: true }, function(err, insertedPlace) {
                 if (err) { errors.push({ findOneAndUpdateError: err }) }
 
                 placesArray.push({

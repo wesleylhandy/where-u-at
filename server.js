@@ -86,10 +86,6 @@ if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
 }
 
-//SERVER SIDE RENDERING
-// const universalLoader = require('./universal-compiled.js');
-// app.use('/', universalLoader);
-
 // Listen on port 3000 or assigned port
 const server = app.listen(app.get('port'), function() {
     console.log(`Somewhere in quadrant ${app.get('port')}, someone is listening...`);

@@ -8,11 +8,26 @@ const PlaceSchema = new Schema({
             required: true,
             unique: true
         },
-        name: String,
-        imageUrl: String,
-        url: String,
-        rating: Number,
-        address: Schema.Types.Mixed
+        name: {
+            type: String,
+            required: true
+        },
+        imageUrl: {
+            type: String,
+            required: true
+        },
+        url: {
+            type: String,
+            required: true
+        },
+        rating: {
+            type: Number,
+            required: true
+        },
+        address: {
+            type: Schema.Types.Mixed,
+            required: true
+        }
     },
     going: [{
         searchDate: Date,
