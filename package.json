@@ -46,7 +46,7 @@
     "build": "NODE_ENV=development babel universal.js -o universal-compiled.js && NODE_ENV=development babel client/src -d lib --ignore *.test.js",
     "start:dev": "concurrently \"node server\" \"npm run client:dev\"",
     "start:react": "react-scripts start",
-    "start": "concurrently \"NODE_ENV=production npm run server\" \"NODE_ENV=production npm run client\"",
+    "start": "concurrently \"npm run server\" \"npm run client\"",
     "server": "node server.js",
     "client:dev": "NODE_ENV=development babel-node start-client.js",
     "client": "node start-client.js",
