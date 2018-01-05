@@ -84,9 +84,9 @@ require("./controllers/checkin-controller.js")(app);
 // if (process.env.NODE_ENV === 'production') {
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'client/build')));
-app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')))
+app.use(favicon(path.join(__dirname, 'client/build/assets/favicon.ico')))
 app.get('/', function(request, response){
-    response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    response.sendFile(path.resolve(__dirname, 'client/build/index.html'));
 });
 // }
 
