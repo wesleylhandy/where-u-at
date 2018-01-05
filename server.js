@@ -1,6 +1,7 @@
 // Dependencies
 const compression = require('compression');
 const express = require("express");
+const favicon = require('serve-favicon')
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
@@ -82,6 +83,7 @@ require("./controllers/checkin-controller.js")(app);
 // Make public a static dir
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, 'client/build')));
+    app.use(favicon(path.join(__dirname, 'client', 'build', 'assets', 'favicon.ico')))
     const path = require('path');
     app.get('/', function(request, response){
       response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
