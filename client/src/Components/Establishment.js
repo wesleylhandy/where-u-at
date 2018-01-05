@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
+import GoingImages from './GoingImages.js';
 import GoingButton from './GoingButton.js';
+
 import yelpBurst from '../images/Yelp_burst_positive_RGB.png';
 import yelp0 from '../images/small_0@2x.png';
 import yelp1 from '../images/small_1@2x.png';
@@ -14,20 +17,57 @@ import yelp4half from '../images/small_4_half@2x.png';
 import yelp5 from '../images/small_5@2x.png';
 
 export default class Establishment extends Component {
+  
   constructor(props) {
     super(props);
+
     this.state = {
       establishment: {...props.establishment.place.place},
-      going: [...props.establishment.going],
-      id: props.id
+      goingPeeps: [...props.establishment.going],
+      numGoing: props.establishment.going.length,
+      id: props.id,
+      date: props.date.currentDate
     }
+    this.getDateAndManageOldState = this.getDateAndManageOldState.bind(this);
   }
-  componentDidMount(){  
-    this.setState({ establishment: {...this.props.establishment.place.place}, id: this.props.id, going: [...this.props.establishment.going]});
+  componentDidMount(){
+    this.getDateAndManageOldState();
+    // console.log({est: this.props.establishment})  
+    this.setState({ 
+      establishment: {...this.props.establishment.place.place}, 
+      id: this.props.id, 
+      goingPeeps: [...this.props.establishment.going],
+      numGoing: this.props.establishment.going.length
+    });
   }
 
   componentWillReceiveProps(nextProps){
-    this.setState({ establishment: nextProps.establishment.place.place, id: nextProps.id, going: [...nextProps.establishment.going]});
+    if(nextProps.date.currentDate !== this.state.date) {
+      this.getDateAndManageOldState();
+    }
+    const update = {};
+    if (nextProps.establishment.going.length !== this.state.numGoing 
+        && nextProps.establishment.place.place.yelpId === this.state.establishment.yelpId) {
+          console.log({UpdateGoing:nextProps.establishment.going})
+      update.goingPeeps = [...nextProps.establishment.going];
+      update.numGoing = nextProps.establishment.going.length;
+    }
+    if(nextProps.establishment.place.place.yelpId !== this.state.establishment.yelpId) {
+      update.establishment = nextProps.establishment.place.place;
+      update.id = nextProps.id;
+      update.goingPeeps = [...nextProps.establishment.going];
+      update.numGoing = nextProps.establishment.going.length;
+    }
+    this.setState(update);
+
+  }
+
+  getDateAndManageOldState = () => {
+    const date = moment().format('MM-DD-YYYY');
+    if (date !== this.state.date) {
+      this.props.updateDate(date);
+      this.props.removeOldGoing(this.state.yelpId, date);
+    }
   }
 
   renderPhoto(imageUrl) {
@@ -86,7 +126,7 @@ export default class Establishment extends Component {
           {this.renderPhoto(this.state.establishment.imageUrl)} 
         </a>
         <div className="establishment-card__info">
-          <div>
+          <div className='establishment-card__info--yelp'>
             <img className='yelp-burst' src={yelpBurst} alt="Yelp Logo"/>
             <a href={this.state.establishment.url} target="_blank">{this.state.establishment.name}</a>
             <img className='yelp-rating' src={this.getRating(this.state.establishment.rating)} alt={`Yelp Rating: ${this.state.establishment.rating}`}/>
@@ -96,7 +136,8 @@ export default class Establishment extends Component {
             {this.renderAddress(this.state.establishment.address.display_address, this.state.establishment.name)}   
             </div>
         </div>
-        <GoingButton id={this.state.id} yelpId={this.state.establishment.yelpId} goingPeeps={this.state.going} {...this.props}/>
+        <GoingButton id={this.state.id} yelpId={this.state.establishment.yelpId} goingPeeps={this.state.goingPeeps} numGoing={this.state.numGoing} {...this.props}/>
+        <GoingImages goingPeeps={this.state.goingPeeps} yelpId={this.state.establishment.yelpId} {...this.props}/>
       </div>
     )
   }

@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import * as actionCreators from './actions/actions';
+import moment from 'moment';
 
 import 'raf/polyfill';
 import './styles/index.css';
 
 import SearchBar from './Components/SearchBar.js';
 import EstablishmentList from './Components/EstablishmentList.js';
-import FriendsList from './Components/FriendsList.js';
+// import FriendsList from './Components/FriendsList.js';
 
 import {getYelpToken, unAuthUser} from './utils/helpers.js';
 
@@ -24,7 +25,9 @@ class App extends Component {
   }
 
   componentDidMount() {
-    // console.log({InitialState: this.state});
+
+    const date = moment().format('MM-DD-YYYY');
+    this.props.updateDate(date);
 
     getYelpToken().then(response=>{
       this.setState({access_token: response.access_token});
@@ -48,7 +51,7 @@ class App extends Component {
           <a className={this.props.auth.isAuth ? "logout" : "hidden"} onClick={this.logout}>
             →Log Out
             <img src={this.props.auth.isAuth ? this.props.auth.user.imageUrl: ''} 
-              alt="Profile Image" 
+              alt="User Profile" 
               className='profile-image'
             />
           </a>
@@ -64,9 +67,6 @@ class App extends Component {
             <EstablishmentList {...this.props}/>
           </div>
         </section>
-        <aside className={this.props.auth.isAuth ? '' : 'hidden'}>
-          <FriendsList {...this.props}/>
-        </aside>
       </div>
     );
   }
@@ -76,7 +76,8 @@ function mapStateToProps(state) {
   return {
     auth: state.auth,
     search: state.search,
-    establishments: state.establishments
+    establishments: state.establishments,
+    date: state.date
   }
 }
 

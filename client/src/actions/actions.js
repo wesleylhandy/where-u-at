@@ -145,3 +145,10 @@ export const removeOldGoing = (id, date) => {
         searchDate: date
     }
 }
+
+export const updateDate = date => {
+    return {
+        type: 'UPDATE_DATE',
+        date
+    }
+}

@@ -16,8 +16,7 @@ module.exports = function(app) {
             });
 
             if (ids.length) {
-
-                getUsers(ids).then(function(users){
+                getUsersFromIds(ids).then(function(users){
                     console.log({users});
                     res.json({going: users})
                 }).catch(function(err) {
@@ -26,7 +25,6 @@ module.exports = function(app) {
                         return res.json({ title: 'Error', message: err });
                     }
                 })
-
             } else {
                 res.json({going: []});
             }
@@ -42,7 +40,12 @@ module.exports = function(app) {
     router.put('/going/add/:yelpId', function(req, res) {
         Place.findOne({'place.yelpId': req.params.yelpId})
         .then(function(place) {
+            
+            const duplicates = place.going.filter(function(place){return place.searchDate === req.body.searchDate && place.peep.toString() === req.body.peep});
 
+            if(duplicates.length) {
+                 return res.json({id: place._id, place: place.place, going: place.going, duplicate: true})
+            }
             place.going.push({searchDate: req.body.searchDate, peep: req.body.peep});
             
             place.save(function(err, newPlace) {
@@ -54,7 +57,8 @@ module.exports = function(app) {
                 res.json({
                     id: newPlace._id, 
                     place: newPlace.place, 
-                    going: newPlace.going
+                    going: newPlace.going,
+                    duplicate: false
                 });
             })
 
@@ -92,7 +96,7 @@ module.exports = function(app) {
     app.use('/api', router);
 }
 
-function getUsers(ids) {
+function getUsersFromIds(ids) {
     return new Promise(function(resolve, reject){
         let len = ids.length;
         const users = [], promises= [];
