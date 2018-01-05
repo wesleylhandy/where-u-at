@@ -4,8 +4,6 @@ const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const logger = require("morgan");
-const path = require('path');
-const assert = require('assert');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const passport = require('passport');
@@ -84,6 +82,10 @@ require("./controllers/checkin-controller.js")(app);
 // Make public a static dir
 if (process.env.NODE_ENV === 'production') {
     app.use(express.static('client/build'));
+    const path = require('path');
+    app.get('*', function(request, response){
+      response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+    });
 }
 
 // Listen on port 3000 or assigned port
