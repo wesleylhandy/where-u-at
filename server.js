@@ -85,7 +85,7 @@ require("./controllers/checkin-controller.js")(app);
 const path = require('path');
 app.use(express.static(path.join(__dirname, 'client/build')));
 app.use(favicon(path.join(__dirname, 'assets', 'favicon.ico')))
-app.get('', function(request, response){
+app.get('/', function(request, response){
     response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
 });
 // }
