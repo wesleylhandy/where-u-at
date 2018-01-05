@@ -103,13 +103,13 @@ export default class GoingButton extends Component {
       ) :
       (
         <TwitterLogin 
-          loginUrl="https://where-u-at.herokuapp.com/auth/twitter" 
+          loginUrl="/auth/twitter" 
           className='going-btn'
           onFailure={this.onFailed} 
           onSuccess={this.onSuccess} 
           text="Add Going"
           showIcon={false}
-          requestTokenUrl="https://where-u-at.herokuapp.com/auth/twitter/return" />
+          requestTokenUrl="/auth/twitter/return" />
       );
 
     return (
