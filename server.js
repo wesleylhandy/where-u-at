@@ -81,9 +81,9 @@ require("./controllers/checkin-controller.js")(app);
 
 // Make public a static dir
 if (process.env.NODE_ENV === 'production') {
-    app.use(express.static('client/build'));
+    app.use(express.static(path.join(__dirname, 'client/build')));
     const path = require('path');
-    app.get('/*', function(request, response){
+    app.get('/', function(request, response){
       response.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
     });
 }
