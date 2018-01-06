@@ -53,6 +53,7 @@ module.exports = function(app) {
 
     router.route('/twitter')
         .post(function(req, res, next) {
+            console.log({query: req.query})
             request.post({
                 url: `https://api.twitter.com/oauth/access_token?oauth_verifier`,
                 oauth: {
@@ -63,7 +64,8 @@ module.exports = function(app) {
                 form: { oauth_verifier: req.query.oauth_verifier }
             }, function(err, r, body) {
                 if (err) {
-                    return res.status(500).send({ message: err.message });
+                    console.log({leg1Error: err})
+                    return res.status(500).send({message: err.message });
                 }
 
                 const bodyString = '{ "' + body.replace(/&/g, '", "').replace(/=/g, '": "') + '"}';
@@ -92,13 +94,13 @@ module.exports = function(app) {
             request.post({
                 url: 'https://api.twitter.com/oauth/request_token',
                 oauth: {
-                    oauth_callback: "https%3A%2F%2Fwhere-u-at.herokuapp.com%2Ftwitter-callback",
+                    oauth_callback: "https%3A%2F%2Fwhere-u-at.herokuapp.com%2F",
                     consumer_key: process.env.TWITTER_CONSUMER_KEY,
                     consumer_secret: process.env.TWITTER_CONSUMER_SECRET
                 }
             }, function(err, r, body) {
                 if (err) {
-
+                    console.log({finalLegErr: err})
                     return res.status(500).send({ message: err.message });
 
                 }
