@@ -41,5 +41,6 @@ const defaultState = {
     current_search: '',
     geolocated: false,
   },
-  establishments: []
+  establishments: [],
+  date: ''
 }
