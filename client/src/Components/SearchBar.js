@@ -119,7 +119,7 @@ export default class SearchBar extends Component {
                     return { id, place } 
                 }));
                 this.setState({totalPlaces: parseInt(response.totalPlaces, 10) });
-                console.log({ searchTotal: response.totalPlaces });
+                // console.log({ searchTotal: response.totalPlaces });
 
             }).catch(err => {
                 alert(err);

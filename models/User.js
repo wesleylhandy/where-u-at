@@ -39,8 +39,8 @@ UserSchema.statics.upsertTwitterUser = function(token, tokenSecret, profile, cb)
         'twitterProvider.id': profile.id
     }, function(err, user) {
         // no user was found, lets create a new one
-        console.log({imageUrl: profile.profile_image_url_https})
-        const imageUrl = profile.profile_image_url_https;
+        console.log({imageUrl: profile._json.profile_image_url_https})
+        const imageUrl = profile._json.profile_image_url_https;
         if (!user) {
             var newUser = new that({
                 name: profile.username,

@@ -48,7 +48,7 @@ export default class Establishment extends Component {
     const update = {};
     if (nextProps.establishment.going.length !== this.state.numGoing 
         && nextProps.establishment.place.place.yelpId === this.state.establishment.yelpId) {
-          console.log({UpdateGoing:nextProps.establishment.going})
+          // console.log({UpdateGoing:nextProps.establishment.going})
       update.goingPeeps = [...nextProps.establishment.going];
       update.numGoing = nextProps.establishment.going.length;
     }

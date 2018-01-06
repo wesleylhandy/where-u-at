@@ -15,7 +15,7 @@ export default class GoingImages extends Component {
         getGoingApi(this.props.yelpId, this.props.date.currentDate)
             .then(getGoingRes=>{
                 this.setState({goingPeeps: [...getGoingRes.going]})
-                console.log({MountGoingImages: getGoingRes})
+                // console.log({MountGoingImages: getGoingRes})
         }).catch(err=>console.error({err}));
     }
 
@@ -24,14 +24,14 @@ export default class GoingImages extends Component {
             getGoingApi(nextProps.yelpId, nextProps.date.currentDate)
                 .then(getGoingRes=>{
                     this.setState({goingPeeps: [...getGoingRes.going]})
-                    console.log({PropsGoingImages: getGoingRes})
+                    // console.log({PropsGoingImages: getGoingRes})
                 }).catch(err=>console.error({err}));
         }
     }
 
     renderImages(peeps){
         return peeps.map((peep, id)=> {
-            console.log({peep})
+            // console.log({peep})
             return (
                 <div key={`img-${id}`}>
                     <img src={peep.imageUrl} alt='User Profile'/>
