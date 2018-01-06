@@ -4,12 +4,13 @@ const User = require('./../models/User');
 
 passport.serializeUser(function(user, done) {
     // console.log('serializeUser');
-    done(null, user.id);
+    done(null, user);
 });
 
-passport.deserializeUser(function(id, done) {
+passport.deserializeUser(function(user, done) {
     // console.log('deserializeUser');
-    User.findById(id, function(err, user) {
+    User.findById(user._id, function(err, user) {
+        if(err){console.error({deserializeError: err})}
         done(null, user);
     });
 });
@@ -22,6 +23,7 @@ module.exports = function() {
     }, function(token, tokenSecret, profile, done) {
         // update the user if s/he exists or add a new user
         User.upsertTwitterUser(token, tokenSecret, profile, function(err, user) {
+            if(err)console.error({upsertError: err})
             return done(err, user);
         });
     }));
