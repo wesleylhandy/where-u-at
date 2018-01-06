@@ -68,6 +68,16 @@ app.use(session({
     cookie: { maxAge: month }
 }));
 
+// Make public a static dir
+// if (process.env.NODE_ENV === 'production') {
+    const path = require('path');
+    app.use(express.static(path.join(__dirname, 'client/build')));
+    app.use(favicon(path.join(__dirname, 'client/build/assets/favicon.ico')))
+    app.get('/', function(request, response){
+        response.sendFile(path.resolve(__dirname, 'client/build/index.html'));
+    });
+    // }
+
 const passportConfig = require('./config/passport');
 
 passportConfig();
@@ -75,20 +85,9 @@ passportConfig();
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 require("./controllers/auth-controller.js")(app);
 require("./controllers/search-controller.js")(app);
 require("./controllers/checkin-controller.js")(app);
-
-// Make public a static dir
-// if (process.env.NODE_ENV === 'production') {
-const path = require('path');
-app.use(express.static(path.join(__dirname, 'client/build')));
-app.use(favicon(path.join(__dirname, 'client/build/assets/favicon.ico')))
-app.get('/', function(request, response){
-    response.sendFile(path.resolve(__dirname, 'client/build/index.html'));
-});
-// }
 
 // Listen on port 3000 or assigned port
 const server = app.listen(app.get('port'), function() {
