@@ -40,12 +40,13 @@ UserSchema.statics.upsertTwitterUser = function(token, tokenSecret, profile, cb)
     }, function(err, user) {
         // no user was found, lets create a new one
         console.log({imageUrl: profile.profile_image_url_https})
+        const imageUrl = profile.profile_image_url_https;
         if (!user) {
             var newUser = new that({
                 name: profile.username,
                 email: profile.emails[0].value,
                 id: profile.id,
-                imageUrl: profile.profile_image_url_https || 'https://via.placeholder.com/75',
+                imageUrl: imageUrl || 'https://via.placeholder.com/75',
                 twitterProvider: {
                     id: profile.id,
                     token: token,
